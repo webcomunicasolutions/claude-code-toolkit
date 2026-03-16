@@ -1,0 +1,8 @@
+.env
+.credentials.json
+*.key
+*.pem
+.claude-session
+*.sync-conflict-*
+[conflicted*
+_pendiente_borrado/
