@@ -24,7 +24,9 @@ cp SKILL.md ~/.claude/skills/project-optimizer/
 
 ## Usage
 
-In Claude Code, say any of:
+**Recommended**: Use the `/optimize` command, which runs a 3-step agent pipeline (claude-code-guide diagnoses, general-purpose executes, claude-code-guide verifies).
+
+**Alternative**: Trigger the skill via natural language:
 - "optimiza el proyecto"
 - "optimizar para claude"
 - "revisa el proyecto"

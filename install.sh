@@ -2,8 +2,8 @@
 # =============================================================================
 # Claude Code Toolkit - Installer
 # =============================================================================
-# Copies agents, hooks, skills, and statusline to ~/.claude/
-# Run: bash install.sh [--all | --agents | --statusline | --hook | --skill]
+# Copies agents, hooks, skills, commands, and statusline to ~/.claude/
+# Run: bash install.sh [--all | --agents | --statusline | --hook | --skill | --commands]
 # =============================================================================
 
 set -e
@@ -54,6 +54,15 @@ install_skill() {
     success "Skill installed to $CLAUDE_DIR/skills/project-optimizer/"
 }
 
+install_commands() {
+    info "Installing commands..."
+    mkdir -p "$CLAUDE_DIR/commands"
+    cp "$SCRIPT_DIR"/commands/*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
+    # Remove the README from commands dir (it's not a command)
+    rm -f "$CLAUDE_DIR/commands/README.md"
+    success "Commands installed to $CLAUDE_DIR/commands/"
+}
+
 install_all() {
     echo ""
     echo "==============================="
@@ -64,6 +73,7 @@ install_all() {
     install_statusline
     install_hook
     install_skill
+    install_commands
     echo ""
     success "All components installed!"
     echo ""
@@ -80,9 +90,10 @@ case "${1:-}" in
     --statusline) install_statusline ;;
     --hook)       install_hook ;;
     --skill)      install_skill ;;
+    --commands)   install_commands ;;
     --all|"")     install_all ;;
     *)
-        echo "Usage: bash install.sh [--all | --agents | --statusline | --hook | --skill]"
+        echo "Usage: bash install.sh [--all | --agents | --statusline | --hook | --skill | --commands]"
         exit 1
         ;;
 esac

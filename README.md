@@ -9,6 +9,7 @@ A collection of hooks, agents, skills, and utilities to supercharge your [Claude
 | [**Telegram Approval Hook**](hooks/telegram-approval/) | Approve/deny Claude Code actions remotely from your phone via Telegram |
 | [**Statusline**](statusline/) | Rich status bar showing context usage, tokens, costs, and session tracking |
 | [**Project Optimizer**](skills/project-optimizer/) | Audit and optimize any project for Claude Code efficiency |
+| [**Custom Commands**](commands/) | Slash commands: `/optimize` (agent-driven audit) and `/n8n` (specialist mode) |
 | [**8 Custom Agents**](agents/) | Code reviewer, TDD cycle, principal engineer, devil's advocate, and more |
 
 ## Quick Install
@@ -59,6 +60,18 @@ Rich status bar for Claude Code showing real-time metrics:
 5. **Clean structure** - Organize files and remove clutter
 6. **Verification** - Final checks and scoring (0-10)
 
+### Commands
+
+#### [Custom Commands](commands/)
+Slash commands that activate specialized modes:
+
+| Command | Description |
+|---------|-------------|
+| `/optimize` | Agent-driven project audit using `claude-code-guide` as architect + `general-purpose` for execution + final review |
+| `/n8n` | Activate n8n specialist mode for workflow creation and optimization |
+
+The `/optimize` command is the **recommended way** to run the project optimizer - it uses a 3-step agent pipeline (diagnose, execute, verify) instead of the manual 6-phase skill workflow.
+
 ### Agents
 
 8 specialized agents for different workflows:
@@ -90,6 +103,12 @@ cp statusline/statusline.sh ~/.claude/statusline.sh
 
 ### Telegram Hook
 See [hooks/telegram-approval/README.md](hooks/telegram-approval/README.md) for full setup (requires a Telegram bot).
+
+### Commands
+```bash
+cp commands/*.md ~/.claude/commands/
+rm -f ~/.claude/commands/README.md
+```
 
 ### Project Optimizer Skill
 ```bash
