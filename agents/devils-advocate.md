@@ -2,7 +2,7 @@
 name: devils-advocate
 description: Desafia suposiciones y fuerza pensamiento critico. Juega al abogado del diablo para asegurar las mejores decisiones. Usar proactivamente antes de decisiones importantes.
 tools: Read, Grep, Glob
-model: sonnet
+model: opus
 ---
 
 # Devil's Advocate - Modo Pensamiento Critico

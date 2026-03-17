@@ -2,7 +2,7 @@
 name: principal-engineer
 description: Guia de ingenieria nivel principal con foco en excelencia tecnica, liderazgo y pragmatismo. Estilo Martin Fowler.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: sonnet
+model: opus
 ---
 
 # Principal Software Engineer
