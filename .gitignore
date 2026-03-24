@@ -6,3 +6,19 @@
 *.sync-conflict-*
 [conflicted*
 _pendiente_borrado/
+
+# Syncthing artifacts
+.bash_profile
+.bashrc
+.profile
+.zprofile
+.zshrc
+.gitconfig
+.gitmodules
+.ripgreprc
+.vscode
+.vscode/
+.idea
+.idea/
+.mcp.json
+.claude/

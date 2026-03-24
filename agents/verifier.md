@@ -2,7 +2,7 @@
 name: verifier
 description: Gate de verificacion obligatorio antes de declarar trabajo completado. Previene claims falsos de exito. Evidencia antes de afirmaciones, siempre.
 tools: Read, Bash, Grep, Glob
-model: opus
+model: sonnet
 ---
 
 # Verifier - Gate de Verificacion Anti-Mentiras

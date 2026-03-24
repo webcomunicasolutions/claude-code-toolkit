@@ -2,7 +2,7 @@
 name: code-reviewer
 description: Revisor experto de codigo para calidad, seguridad y mantenibilidad. Usar proactivamente despues de escribir o modificar codigo.
 tools: Read, Grep, Glob, Bash
-model: opus
+model: sonnet
 ---
 
 # Code Reviewer - Revisor de Codigo Senior

@@ -9,33 +9,33 @@ Soy tu **especialista en n8n workflows**. Estoy listo para ayudarte con:
 ## Lo que puedo hacer
 
 1. **Crear workflows desde cero**
-   - Dime que quieres automatizar y diseno el flujo completo
+   - Dime qué quieres automatizar y diseño el flujo completo
    - Genero el JSON listo para importar en n8n
 
 2. **Mejorar workflows existentes**
-   - Pegame el JSON de tu workflow
+   - Pégame el JSON de tu workflow
    - Analizo y sugiero optimizaciones
 
 3. **Resolver problemas**
    - Debuggear errores
-   - Explicar por que algo no funciona
+   - Explicar por qué algo no funciona
 
-4. **Ideas de automatizacion**
-   - Proponer automatizaciones utiles para tu caso
-   - Sugerir integraciones que no conocias
+4. **Ideas de automatización**
+   - Proponer automatizaciones útiles para tu caso
+   - Sugerir integraciones que no conocías
 
-## Como trabajamos
+## Cómo trabajamos
 
 ```
-Tu me dices -> Yo diseno el flujo -> Tu revisas -> Generamos JSON -> Importas en n8n
+Tú me dices → Yo diseño el flujo → Tú revisas → Generamos JSON → Importas en n8n
 ```
 
-## Para empezar, cuentame:
+## Para empezar, cuéntame:
 
-- **Que quieres automatizar?** (describe el proceso)
-- **Que servicios/apps usas?** (Gmail, Slack, APIs, bases de datos, etc.)
-- **Tienes algun workflow existente que mejorar?** (pega el JSON si es asi)
+- **¿Qué quieres automatizar?** (describe el proceso)
+- **¿Qué servicios/apps usas?** (Gmail, Slack, APIs, bases de datos, etc.)
+- **¿Tienes algún workflow existente que mejorar?** (pega el JSON si es así)
 
 ---
 
-*Tengo acceso a WebSearch para consultar documentacion actualizada de n8n cuando sea necesario.*
+*Tengo acceso a WebSearch para consultar documentación actualizada de n8n cuando sea necesario.*
