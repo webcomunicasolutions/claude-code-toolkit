@@ -296,12 +296,81 @@ Rich status bar showing real-time metrics:
 - Session tracking (prompts, burn rate)
 - Git branch info
 
-## Requirements
+## Requirements & Dependencies
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
-- `jq` and `curl` (for hooks and statusline)
-- `bc` (for statusline cost calculations)
-- A Telegram bot (only for the Telegram hook)
+### Quick Setup
+
+```bash
+# Install the toolkit
+bash install.sh
+
+# Install all system dependencies
+bash install-deps.sh --all
+
+# Check what's installed
+bash install-deps.sh --check
+```
+
+### System Packages (apt)
+
+| Package | Used by | Purpose |
+|---------|---------|---------|
+| `jq` | Hooks, Statusline | JSON processing |
+| `curl` | Hooks, Web scraper | HTTP requests |
+| `bc` | Statusline | Cost calculations |
+| `git` | Multiple | Version control |
+| `pandoc` | docx, pptx | Document conversion |
+| `poppler-utils` | pdf, docx, pptx | PDF tools (pdftotext, pdftoppm) |
+| `libreoffice` | docx, pptx, xlsx | Office document processing |
+| `qpdf` | pdf | PDF merge/split |
+| `ffmpeg` | whisper-transcribe | Audio/video processing |
+| `xvfb` | screenshot-compare | Virtual display for headless browsers |
+| `python3` / `pip3` | Multiple skills | Python runtime |
+| `nodejs` / `npm` | Multiple skills | Node.js runtime |
+
+### Python Packages (pip)
+
+| Package | Used by |
+|---------|---------|
+| `reportlab` | pdf, documentos-corporativos |
+| `pypdf`, `pdfplumber` | pdf |
+| `pytesseract`, `pdf2image` | pdf (OCR) |
+| `openpyxl`, `pandas` | xlsx |
+| `defusedxml` | docx, pptx, xlsx |
+| `markitdown[pptx]` | pptx |
+| `beautifulsoup4`, `lxml`, `html5lib` | web-scraper |
+| `nodriver` | screenshot-compare |
+| `pillow`, `imageio`, `numpy` | slack-gif-creator |
+| `youtube-transcript-api` | youtube-transcript |
+| `requests` | Multiple |
+
+### Node Packages (npm)
+
+| Package | Used by |
+|---------|---------|
+| `playwright` | e2e-testing, webapp-testing, screenshot-compare |
+| `docx` | docx |
+| `pptxgenjs` | pptx |
+| `sharp` | pptx, web-artifacts-builder |
+| `react`, `react-dom`, `react-icons` | web-artifacts-builder, pptx |
+
+### Optional
+
+| Package | Size | Used by | Install |
+|---------|------|---------|---------|
+| `faster-whisper` | ~500MB | whisper-transcribe | `bash install-deps.sh --whisper` |
+| Chromium browser | ~200MB | Playwright skills | `npx playwright install chromium` |
+| Telegram bot | - | Telegram hook | See [hook README](hooks/telegram-approval/) |
+
+### Install by Category
+
+```bash
+bash install-deps.sh --system   # System packages (apt)
+bash install-deps.sh --python   # Python packages (pip)
+bash install-deps.sh --node     # Node packages (npm)
+bash install-deps.sh --whisper  # Audio/video transcription (optional)
+bash install-deps.sh --check    # Verify what's installed
+```
 
 ## Contributing
 
