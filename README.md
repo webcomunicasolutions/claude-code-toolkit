@@ -7,8 +7,8 @@ A comprehensive collection of agents, skills, commands, rules, hooks, and utilit
 | Component | Count | Description |
 |-----------|-------|-------------|
 | [**Agents**](agents/) | 32 | Specialized agents for code review, TDD, security, architecture, and more |
-| [**Skills**](skills/) | 62 | Domain knowledge packs: from PDF generation to n8n workflows |
-| [**Commands**](commands/) | 15 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
+| [**Skills**](skills/) | 63 | Domain knowledge packs with scripts, references, and templates |
+| [**Commands**](commands/) | 17 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
 | [**Rules**](rules/) | 17 | Coding standards for 12+ languages and cross-cutting concerns |
 | [**Hooks**](hooks/) | 1 | Telegram approval hook for remote action control |
 | [**Statusline**](statusline/) | 1 | Rich status bar with context usage, tokens, costs, and git info |
@@ -25,8 +25,8 @@ Install individual components:
 
 ```bash
 bash install.sh --agents      # 32 agents
-bash install.sh --skills      # 62 skills
-bash install.sh --commands    # 15 commands
+bash install.sh --skills      # 63 skills
+bash install.sh --commands    # 17 commands
 bash install.sh --rules       # 17 coding rules
 bash install.sh --statusline  # Status bar
 bash install.sh --hook        # Telegram approval hook
@@ -124,7 +124,7 @@ This shows the total count of agents, skills, commands, and rules installed.
 | `web-scraper-expert` | Web scraping with anti-bot bypass |
 | `ninjaone-docs-expert` | NinjaOne RMM documentation specialist |
 
-### Commands (15)
+### Commands (17)
 
 Slash commands that activate specialized modes:
 
@@ -145,6 +145,8 @@ Slash commands that activate specialized modes:
 | `/model-route` | Select optimal model per task and budget |
 | `/eval` | Define and run feature evaluations |
 | `/harness-audit` | Audit Claude Code harness configuration |
+| `/autoresearch` | Autonomous improvement loop (Karpathy's AutoResearch pattern) |
+| `/full` | Full autonomy mode - use all resources without asking |
 
 ### Skills (62)
 
@@ -225,6 +227,7 @@ Slash commands that activate specialized modes:
 | `e2e-testing` | Playwright E2E with Page Object Model |
 | `playwright-cli` | Browser automation for testing and scraping |
 | `webapp-testing` | Local web app testing with Playwright |
+| `test-and-fix` | Autonomous QA loop: test all pages, fix bugs, repeat until clean |
 | `verification-loop` | 6-phase QA system before delivery |
 | `screenshot-compare` | Screenshot capture for visual comparison |
 
