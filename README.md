@@ -7,7 +7,7 @@ A comprehensive collection of agents, skills, commands, rules, hooks, and utilit
 | Component | Count | Description |
 |-----------|-------|-------------|
 | [**Agents**](agents/) | 32 | Specialized agents for code review, TDD, security, architecture, and more |
-| [**Skills**](skills/) | 63 | Domain knowledge packs with scripts, references, and templates |
+| [**Skills**](skills/) | 64 | Domain knowledge packs with scripts, references, and templates |
 | [**Commands**](commands/) | 17 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
 | [**Rules**](rules/) | 17 | Coding standards for 12+ languages and cross-cutting concerns |
 | [**Hooks**](hooks/) | 1 | Telegram approval hook for remote action control |
@@ -25,7 +25,7 @@ Install individual components:
 
 ```bash
 bash install.sh --agents      # 32 agents
-bash install.sh --skills      # 63 skills
+bash install.sh --skills      # 64 skills
 bash install.sh --commands    # 17 commands
 bash install.sh --rules       # 17 coding rules
 bash install.sh --statusline  # Status bar
@@ -256,6 +256,7 @@ Slash commands that activate specialized modes:
 | `ninjaone-specialist` | NinjaOne RMM PowerShell scripts |
 | `api-design` | REST API conventions and design |
 | `mcp-builder` | Build MCP servers (Python/Node) |
+| `llmwhisperer` | LLMWhisperer v2 OCR API for document text extraction |
 
 ### Rules (17)
 
