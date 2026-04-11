@@ -24,7 +24,7 @@ Gestión de imágenes Docker custom en Docker Hub para despliegue en servidores 
 
 ### webcomunica/php-mysql-custom:8.2-apache
 
-PHP 8.2 con Apache y extensiones MySQL. Para apps web PHP en Easypanel.
+PHP 8.2 con Apache y extensiones MySQL. Para apps web PHP con MySQL/MariaDB en Easypanel.
 
 **Incluye:**
 - PHP 8.2 + Apache (base oficial `php:8.2-apache`)
@@ -43,11 +43,35 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 EXPOSE 80
 ```
 
-**En Easypanel:** Usar `webcomunica/php-mysql-custom:8.2-apache` como imagen.
+**Ejemplo de uso en Easypanel:**
+- Cualquier servicio App con PHP + MySQL/MariaDB
 
-**Servidores donde se usa:**
-- gesfac (192.168.4.100) - servicio gesfac_web
-- GinerNet VPS (5.134.117.56) - servicio avisos_web
+---
+
+### webcomunica/php-pgsql-custom:8.2-apache
+
+PHP 8.2 con Apache y extensiones PostgreSQL. Para apps web PHP con PostgreSQL en Easypanel.
+
+**Incluye:**
+- PHP 8.2 + Apache (base oficial `php:8.2-apache`)
+- Extensiones: `pdo_pgsql`, `pgsql`
+- Módulos Apache: `rewrite`, `headers`, `expires`, `deflate`
+- AllowOverride All (soporte .htaccess)
+- php.ini de producción
+
+**Dockerfile:**
+```dockerfile
+FROM php:8.2-apache
+RUN apt-get update && apt-get install -y libpq-dev && rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-install pdo_pgsql pgsql
+RUN a2enmod rewrite headers expires deflate
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+EXPOSE 80
+```
+
+**Ejemplo de uso en Easypanel:**
+- Cualquier servicio App con PHP + PostgreSQL
 
 ---
 
@@ -108,7 +132,8 @@ ssh usuario@servidor 'sudo docker pull webcomunica/nombre-imagen:tag'
 
 | Parámetro | Valor |
 |-----------|-------|
-| Imagen | `webcomunica/php-mysql-custom:8.2-apache` |
+| Imagen MySQL | `webcomunica/php-mysql-custom:8.2-apache` |
+| Imagen PostgreSQL | `webcomunica/php-pgsql-custom:8.2-apache` |
 | Puerto interno | 80 |
 | Bind mount | `/etc/easypanel/projects/{proyecto}/{servicio}/html` → `/var/www/html` |
 | Variables de entorno | `PORT=80`, `TZ=Europe/Madrid`, `DB_HOST=...`, `DB_PORT=3306`, `DB_NAME=...`, `DB_USER=...`, `DB_PASSWORD=...` |
