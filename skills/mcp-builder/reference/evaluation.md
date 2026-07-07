@@ -441,7 +441,7 @@ python scripts/evaluation.py \
   -t stdio \
   -c python \
   -a my_mcp_server.py \
-  -e API_KEY=abc123 \
+  -e API_KEY=<TU_API_KEY> \
   -e DEBUG=true \
   evaluation.xml
 ```

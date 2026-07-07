@@ -405,19 +405,19 @@ return [{
 
 ## Example 10: Environment Variables
 
-**Setup**: Environment variable `API_KEY=secret123`
+**Setup**: Environment variable `API_KEY=<TU_API_KEY>`
 
 ### In HTTP Request (Headers)
 ```javascript
 Authorization: Bearer {{$env.API_KEY}}
 ```
-**Result**: `Authorization: Bearer secret123`
+**Result**: `Authorization: Bearer EJEMPLO_NO_REAL`
 
 ### In URL
 ```javascript
 https://api.example.com/data?key={{$env.API_KEY}}
 ```
-**Result**: `https://api.example.com/data?key=secret123`
+**Result**: `https://api.example.com/data?key=EJEMPLO_NO_REAL`
 
 ---
 
