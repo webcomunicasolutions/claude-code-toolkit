@@ -420,7 +420,7 @@ return [{
 import base64
 
 username = "admin"
-password = "secret123"
+password = "<TU_PASSWORD>"
 
 # Create Basic Auth header
 credentials = f"{username}:{password}"
