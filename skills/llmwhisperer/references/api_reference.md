@@ -53,6 +53,7 @@ Convert PDF/scanned/Office documents to LLM-ready text. All requests are async (
 | use_webhook | string | | Registered webhook name to call on completion |
 | webhook_metadata | string | | Metadata sent verbatim to webhook |
 | add_line_nos | bool | `false` | Add line numbers for highlighting API |
+| allow_rotated_text | bool | `true` | Include rotated/angled text in output |
 
 ### Request Body
 

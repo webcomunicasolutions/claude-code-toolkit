@@ -70,10 +70,10 @@ mp3, wav, ogg, m4a, flac, aac, mp4, mkv, avi, mov, webm (cualquier formato que F
 
 ```bash
 # El usuario tiene una nota de voz de WhatsApp
-whisper-transcribe /home/webcomunica/Downloads/nota.ogg --language es --output stdout
+whisper-transcribe ~/Downloads/nota.ogg --language es --output stdout
 
 # Transcribir una reunión y guardar subtítulos
-whisper-transcribe /home/webcomunica/proyectos/reunion.mp4 \
+whisper-transcribe ~/reunion.mp4 \
   --model medium \
   --language es \
   --output srt
