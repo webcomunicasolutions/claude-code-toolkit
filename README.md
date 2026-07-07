@@ -6,8 +6,8 @@ A comprehensive collection of agents, skills, commands, rules, hooks, and utilit
 
 | Component | Count | Description |
 |-----------|-------|-------------|
-| [**Agents**](agents/) | 32 | Specialized agents for code review, TDD, security, architecture, and more |
-| [**Skills**](skills/) | 64 | Domain knowledge packs with scripts, references, and templates |
+| [**Agents**](agents/) | 31 | Specialized agents for code review, TDD, security, architecture, and more |
+| [**Skills**](skills/) | 67 | Domain knowledge packs with scripts, references, and templates |
 | [**Commands**](commands/) | 17 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
 | [**Rules**](rules/) | 17 | Coding standards for 12+ languages and cross-cutting concerns |
 | [**Hooks**](hooks/) | 1 | Telegram approval hook for remote action control |
@@ -24,8 +24,8 @@ bash install.sh
 Install individual components:
 
 ```bash
-bash install.sh --agents      # 32 agents
-bash install.sh --skills      # 64 skills
+bash install.sh --agents      # 31 agents
+bash install.sh --skills      # 67 skills
 bash install.sh --commands    # 17 commands
 bash install.sh --rules       # 17 coding rules
 bash install.sh --statusline  # Status bar
@@ -70,7 +70,7 @@ This shows the total count of agents, skills, commands, and rules installed.
 
 ## Components
 
-### Agents (32)
+### Agents (31)
 
 #### Code Reviewers
 | Agent | Languages/Focus |
@@ -122,7 +122,6 @@ This shows the total count of agents, skills, commands, and rules installed.
 | `refactor-cleaner` | Dead code, duplicates, unused dependencies |
 | `loop-operator` | Autonomous work loops with safety guardrails |
 | `web-scraper-expert` | Web scraping with anti-bot bypass |
-| `ninjaone-docs-expert` | NinjaOne RMM documentation specialist |
 
 ### Commands (17)
 
@@ -148,7 +147,7 @@ Slash commands that activate specialized modes:
 | `/autoresearch` | Autonomous improvement loop (Karpathy's AutoResearch pattern) |
 | `/full` | Full autonomy mode - use all resources without asking |
 
-### Skills (62)
+### Skills (67)
 
 #### Document Generation
 | Skill | Description |
@@ -204,7 +203,6 @@ Slash commands that activate specialized modes:
 | Skill | Description |
 |-------|-------------|
 | `docker-patterns` | Docker/Compose for dev and production |
-| `docker-hub` | Docker Hub image management |
 | `postgres-patterns` | PostgreSQL indexing, RLS, optimization |
 | `database-migrations` | Safe, reversible, zero-downtime migrations |
 | `linux-server-audit` | Complete server health check and security audit |
@@ -229,6 +227,9 @@ Slash commands that activate specialized modes:
 | `webapp-testing` | Local web app testing with Playwright |
 | `test-and-fix` | Autonomous QA loop: test all pages, fix bugs, repeat until clean |
 | `verification-loop` | 6-phase QA system before delivery |
+| `adversarial-review` | Adversarial reviewer loop that fixes and retests until zero bugs |
+| `quality-gate` | Combines all reviewers in a loop until zero bugs |
+| `dev-browser` | Browser automation with persistent page state |
 | `screenshot-compare` | Screenshot capture for visual comparison |
 
 #### Project Management
@@ -242,6 +243,7 @@ Slash commands that activate specialized modes:
 | `doc-specialist` | Generate agents from scraped documentation |
 | `skill-creator` | Guide for creating new skills |
 | `skills-sh-search` | Browse and install skills from skills.sh |
+| `spec` | Spec-driven kickoff for large tasks (Karpathy 3-layer method) |
 
 #### Communication
 | Skill | Description |
@@ -253,10 +255,10 @@ Slash commands that activate specialized modes:
 #### Specialized
 | Skill | Description |
 |-------|-------------|
-| `ninjaone-specialist` | NinjaOne RMM PowerShell scripts |
 | `api-design` | REST API conventions and design |
 | `mcp-builder` | Build MCP servers (Python/Node) |
 | `llmwhisperer` | LLMWhisperer v2 OCR API for document text extraction |
+| `critico` | Always-on critical, honest attitude (no default validation) |
 
 ### Rules (17)
 
