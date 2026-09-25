@@ -84,3 +84,12 @@ whisper-transcribe ~/reunion.mp4 \
 - Funciona sin GPU (CPU, compute_type=int8) → lento pero funciona en cualquier máquina
 - NO requiere activar ningún venv ni estar en ningún proyecto
 - Si hay GPU disponible: añadir `--device cuda` para mayor velocidad
+
+## Auto-mejora
+
+Al cerrar cada aplicacion practica de esta skill:
+1. Registrar aprendizajes en `aprendizajes/<caso>.md` (o en esta seccion si es breve)
+2. Si el patron es generalizable, actualizar el cuerpo de este SKILL.md
+3. Si se descubre un error recurrente, anadirlo a una seccion de "Errores conocidos"
+
+Sin esta fase, la skill se fosiliza y pierde valor con el tiempo.

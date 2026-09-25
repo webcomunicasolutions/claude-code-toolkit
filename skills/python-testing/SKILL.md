@@ -1,6 +1,6 @@
 ---
 name: python-testing
-description: Patrones de testing Python con pytest - fixtures, parametrización, mocking, async, cobertura 80%+. Usar cuando se escriban tests en Python.
+description: Patrones de testing Python con pytest - fixtures, parametrización, mocking, async, cobertura 80%+. Usar cuando se escriban tests en Python. NOT for JavaScript/TypeScript tests or non-pytest frameworks.
 ---
 
 # Python Testing (pytest)

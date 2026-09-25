@@ -1,7 +1,7 @@
 ---
 name: database-reviewer
 description: Revisor de PostgreSQL - queries, schemas, RLS, performance, indexing. Usar para reviews de código SQL y schemas de BD.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

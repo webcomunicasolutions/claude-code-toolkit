@@ -1,6 +1,6 @@
 ---
 name: docker-patterns
-description: Patrones de Docker y Docker Compose para desarrollo y producción. Multi-stage builds, volumes, networking, security. Usar cuando se containerice aplicaciones.
+description: Patrones de Docker y Docker Compose para desarrollo y producción. Multi-stage builds, volumes, networking, security. Usar cuando se containerice aplicaciones. NOT for Kubernetes orchestration or cloud-native CI/CD pipelines.
 ---
 
 # Docker Patterns

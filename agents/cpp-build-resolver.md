@@ -1,6 +1,7 @@
 ---
 name: cpp-build-resolver
 description: Resuelve errores de build C++, CMake y compilación. Usar cuando falle un build C++.
+model: sonnet
 tools:
   - Read
   - Write

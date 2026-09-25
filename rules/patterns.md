@@ -36,17 +36,33 @@ Al construir features nuevas:
 3. Clonar como base
 4. Adaptar a convenciones del proyecto
 
-## Error Handling Pattern
+## Error Handling Pattern (Agentic)
+Errores siempre detallados - nunca genericos. Incluir:
+1. **Que fallo** - operacion y contexto
+2. **Que se intento** - pasos ejecutados
+3. **Resultados parciales** - datos recuperados antes del fallo
+4. **Siguiente paso sugerido** - que mas se puede probar
+
 ```
 try {
   // operacion
 } catch (error) {
   // 1. Log detallado (para debugging)
-  logger.error('Context:', { error, input, userId });
-  // 2. Respuesta generica (para usuario)
-  throw new AppError('Something went wrong', 500);
+  logger.error('Context:', { error, input, userId, attempted, partialResults });
+  // 2. Respuesta con contexto para reintentos
+  throw new AppError('Something went wrong', 500, {
+    what_failed: 'operation description',
+    attempted: ['step1', 'step2'],
+    partial_results: partialData,
+    suggested_next: 'alternative approach'
+  });
 }
 ```
+
+## Few-Shot over Instructions
+- 2-3 ejemplos reales de input/output superan a una pagina de instrucciones
+- Claude aprende el patron subyacente, no solo el formato
+- Usar en: prompts de extraccion, templates de automatizacion, system prompts de skills
 
 ## Principios de diseno
 - DRY pero no prematuro (3 repeticiones antes de abstraer)

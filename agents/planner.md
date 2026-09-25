@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Planificador de implementación que descompone features complejas en pasos accionables. Usar antes de implementar features grandes o refactorings.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

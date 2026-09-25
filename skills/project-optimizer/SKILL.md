@@ -316,3 +316,13 @@ Puntuacion: [antes]/10 → [despues]/10
 | Memorias | No hay | Basicas | Completas (4+ tipos) |
 | Reglas modulares | No hay | 1-2 reglas | 3+ con globs |
 | Estructura raiz | >15 archivos sueltos | 8-15 | <8 |
+
+
+## Auto-mejora
+
+Al cerrar cada aplicacion practica de esta skill:
+1. Registrar aprendizajes en `aprendizajes/<caso>.md` (o en esta seccion si es breve)
+2. Si el patron es generalizable, actualizar el cuerpo de este SKILL.md
+3. Si se descubre un error recurrente, anadirlo a una seccion de "Errores conocidos"
+
+Sin esta fase, la skill se fosiliza y pierde valor con el tiempo.

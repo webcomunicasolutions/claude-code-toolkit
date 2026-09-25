@@ -157,3 +157,13 @@ Crea un mensaje para el proyecto remoto.
 5. **No borrar mensajes** - son el historial de comunicacion entre proyectos
 6. **Nombres descriptivos** - el tema en el nombre del archivo debe ser claro y en snake_case
 7. **Contexto suficiente** - cada mensaje debe tener suficiente contexto para que el otro proyecto entienda sin necesidad de preguntar
+
+
+## Auto-mejora
+
+Al cerrar cada aplicacion practica de esta skill:
+1. Registrar aprendizajes en `aprendizajes/<caso>.md` (o en esta seccion si es breve)
+2. Si el patron es generalizable, actualizar el cuerpo de este SKILL.md
+3. Si se descubre un error recurrente, anadirlo a una seccion de "Errores conocidos"
+
+Sin esta fase, la skill se fosiliza y pierde valor con el tiempo.

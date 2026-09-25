@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: Diseno de REST APIs - convenciones, response formats, pagination, auth, rate limiting. Usar cuando se disenan o revisan endpoints API.
+description: Diseno de REST APIs - convenciones, response formats, pagination, auth, rate limiting. Usar cuando se disenan o revisan endpoints API. NOT for GraphQL, gRPC, or WebSocket API design.
 ---
 
 # API Design Patterns

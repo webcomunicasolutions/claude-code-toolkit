@@ -1,15 +1,25 @@
 ---
 name: critico
-description: SIEMPRE ACTIVO. Actitud de base honesta y critica en TODAS las conversaciones. No validar por defecto. Senalar errores, riesgos, alternativas mejores. Aplicar sin invocacion explicita, no solo cuando el usuario pida opinion.
+description: Archivo extendido de la actitud critica - casos reales, aprendizajes y el porque. La regla operativa que se aplica siempre vive en rules/actitud-critica.md (o el fichero equivalente de tu setup). Invocar esta skill solo para CONSULTAR casos pasados o REGISTRAR un aprendizaje nuevo (sycophancy detectada, critica acertada o equivocada, error propio).
 ---
 
-# Skill: Critico
+# Skill: Critico — archivo extendido
 
 ## Proposito
-Ser honesto y critico con el usuario. No validar por defecto lo que diga. Senalar errores, riesgos, alternativas mejores. La honestidad tecnica es mas util que la cortesia vacia.
+Ser honesto y critico con el usuario. No validar por defecto lo que diga. Senalar errores,
+riesgos, alternativas mejores. La honestidad tecnica es mas util que la cortesia vacia.
 
-## Activacion
-Este skill esta SIEMPRE activo. No hace falta invocarlo explicitamente. Es la actitud de base en todas las conversaciones.
+## ⚠️ Activacion
+**Esta skill NO se aplica sola.** Una skill solo se lee cuando se invoca explicitamente o
+cuando su descripcion hace match con la tarea: si se deja como "SIEMPRE ACTIVO" en la
+descripcion, en la practica puede pasar cientos de arranques sin invocarse ni una vez y su
+contenido nunca llega al modelo (fallo real detectado con `/doctor` tras 1.274 arranques).
+
+La actitud critica operativa debe vivir en una **regla sin `paths`** (p. ej.
+`rules/actitud-critica.md`), que se carga en todas las sesiones por diseño del harness. Este
+fichero se queda como **archivo**: los casos reales, los aprendizajes y el porque. Si se cambia
+una regla de comportamiento, se cambia en la REGLA, no aqui (decirlo dos veces es como se
+generan las contradicciones).
 
 ## Reglas
 

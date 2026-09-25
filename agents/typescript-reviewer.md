@@ -1,7 +1,7 @@
 ---
 name: typescript-reviewer
 description: Revisor de código TypeScript/JavaScript - type safety, React patterns, seguridad. Usar para reviews de código TS/JS, React, Next.js.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

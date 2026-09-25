@@ -1,10 +1,17 @@
 ---
-description: Auditar y optimizar el proyecto actual para Claude Code - reduce CLAUDE.md, crea memorias, reglas, limpia estructura
+description: APLICAR mejoras en el PROYECTO actual (reduce CLAUDE.md, crea memorias, limpia estructura). Si solo quieres detectar sin tocar, usa /audit.
 ---
 
-# Project Optimizer
+# Project Optimizer (escribe)
 
-Ejecuta una auditoria completa del proyecto actual y lo optimiza para que Claude Code trabaje mejor.
+Ejecuta una auditoria completa del proyecto actual y lo optimiza para que Claude Code trabaje mejor. **Si ya ejecutaste `/audit` antes**, puedes saltarte la fase de diagnostico y aplicar directamente las mejoras detectadas.
+
+## Cuando usar este vs los otros
+
+- `/optimize` (este): APLICAR mejoras en PROYECTO
+- `/audit`: solo detectar en proyecto (no modifica)
+- `/harness-audit`: detectar en config global `~/.claude/`
+- `/harness-fix`: aplicar mejoras en config global
 
 ## Instrucciones para Claude
 

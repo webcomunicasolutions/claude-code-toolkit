@@ -1,7 +1,7 @@
 ---
 name: cpp-reviewer
 description: Revisor de código C++ - memory safety, RAII, concurrencia, modern C++. Usar para reviews de código C++.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

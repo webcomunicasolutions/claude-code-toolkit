@@ -1,6 +1,6 @@
 ---
 name: postgres-patterns
-description: Best practices PostgreSQL - indexing, RLS, pagination, optimization, data types. Usar cuando se trabaje con PostgreSQL.
+description: Best practices PostgreSQL - indexing, RLS, pagination, optimization, data types. Usar cuando se trabaje con PostgreSQL. NOT for NoSQL databases or in-memory caching patterns.
 ---
 
 # PostgreSQL Patterns

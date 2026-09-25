@@ -172,8 +172,10 @@ else
 fi
 
 reset="\033[00m"
-blue="\033[01;34m"
-cyan="\033[01;36m"
+# 2026-08-21: el azul 34 no se lee sobre fondo negro. La ruta pasa a cian (igual
+# que el prompt de bash) y el modelo a magenta para que sigan distinguiendose.
+blue="\033[01;36m"     # ruta 📁 (antes 01;34, ilegible)
+cyan="\033[01;35m"     # modelo 🤖
 green="\033[01;32m"
 yellow="\033[01;33m"
 

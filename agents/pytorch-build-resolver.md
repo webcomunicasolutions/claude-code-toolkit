@@ -1,6 +1,7 @@
 ---
 name: pytorch-build-resolver
 description: Resuelve errores de PyTorch - tensor shapes, CUDA, gradients, DataLoader. Usar cuando falle código de ML/deep learning.
+model: sonnet
 tools:
   - Read
   - Write

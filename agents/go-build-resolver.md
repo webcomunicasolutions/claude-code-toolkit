@@ -1,6 +1,7 @@
 ---
 name: go-build-resolver
 description: Resuelve errores de build Go, go vet y linter. Usar cuando falle un build Go.
+model: sonnet
 tools:
   - Read
   - Write

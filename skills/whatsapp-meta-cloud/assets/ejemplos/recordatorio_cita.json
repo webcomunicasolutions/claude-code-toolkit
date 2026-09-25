@@ -1,0 +1,26 @@
+{
+  "name": "recordatorio_cita",
+  "language": "es",
+  "category": "UTILITY",
+  "parameter_format": "POSITIONAL",
+  "components": [
+    {
+      "type": "HEADER",
+      "format": "IMAGE",
+      "example": { "header_handle": ["SUSTITUIR_POR_HEADER_HANDLE_DEL_RESUMABLE_UPLOAD"] }
+    },
+    {
+      "type": "BODY",
+      "text": "Hola {{1}} 👋\n\n📅 Te recordamos tu cita:\n*{{2}}* a las *{{3}}*\n📍 {{4}}\n\n¿Podrás asistir? Confírmanos abajo 👇",
+      "example": { "body_text": [["María", "martes 8 de julio", "10:30", "C/ Ejemplo 1, Villaejemplo"]] }
+    },
+    { "type": "FOOTER", "text": "Nombre del negocio" },
+    {
+      "type": "BUTTONS",
+      "buttons": [
+        { "type": "QUICK_REPLY", "text": "✅ Confirmar" },
+        { "type": "QUICK_REPLY", "text": "🔁 Cambiar cita" }
+      ]
+    }
+  ]
+}

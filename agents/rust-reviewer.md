@@ -1,7 +1,7 @@
 ---
 name: rust-reviewer
 description: Revisor de código Rust - safety, ownership, error handling, patrones idiomáticos. Usar para reviews de código Rust.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

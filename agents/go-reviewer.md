@@ -1,7 +1,7 @@
 ---
 name: go-reviewer
 description: Revisor de código Go - concurrencia, error handling, patrones idiomáticos. Usar para reviews de código Go.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

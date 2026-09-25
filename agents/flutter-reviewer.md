@@ -1,7 +1,7 @@
 ---
 name: flutter-reviewer
 description: Revisor de código Flutter/Dart - widgets, state management, performance, accesibilidad. Usar para reviews de código Flutter.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

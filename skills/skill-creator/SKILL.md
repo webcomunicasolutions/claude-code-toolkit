@@ -344,7 +344,26 @@ The packaging script will:
 
 If validation fails, the script will report the errors and exit without creating a package. Fix any validation errors and run the packaging command again.
 
-### Step 6: Iterate
+### Step 6: Add Auto-Improvement Section
+
+Every procedural skill (one that guides a workflow or multi-step process) MUST include an auto-improvement mechanism. Add this section at the end of SKILL.md:
+
+```markdown
+## Auto-mejora
+
+Al cerrar cada aplicacion practica de esta skill:
+1. Registrar aprendizajes en `aprendizajes/<caso>.md` (o en esta seccion si es breve)
+2. Si el patron es generalizable, actualizar el cuerpo de este SKILL.md
+3. Si se descubre un error recurrente, anadirlo a una seccion de "Errores conocidos"
+
+Sin esta fase, la skill se fosiliza y pierde valor con el tiempo.
+```
+
+A well-proven pattern: each real-world case the skill handles enriches it with new gotchas, shortcuts, or edge cases for future runs — the skill gets sharper with use instead of going stale.
+
+For purely declarative skills (pattern references, style guides), this section is optional — they evolve by direct editing, not by case accumulation.
+
+### Step 7: Iterate
 
 After testing the skill, users may request improvements. Often this happens right after using the skill, with fresh context of how the skill performed.
 

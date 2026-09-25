@@ -1,6 +1,7 @@
 ---
 name: java-build-resolver
 description: Resuelve errores de build Java, Maven y Gradle. Usar cuando falle un build Java.
+model: sonnet
 tools:
   - Read
   - Write

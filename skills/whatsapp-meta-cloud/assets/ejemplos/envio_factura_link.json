@@ -1,0 +1,15 @@
+{
+  "name": "envio_factura_link",
+  "language": "es",
+  "category": "UTILITY",
+  "parameter_format": "POSITIONAL",
+  "components": [
+    { "type": "HEADER", "format": "TEXT", "text": "📄 Tu factura" },
+    {
+      "type": "BODY",
+      "text": "Hola {{1}}, aquí tienes tu factura *{{2}}*. 🐾\n\nPuedes ver o descargar el PDF aquí:\n{{3}}\n\nPara cualquier duda, responde a este mensaje.",
+      "example": { "body_text": [["María", "F-2359", "https://TU-DOMINIO/doc.php?d=f&id=1&t=abc"]] }
+    },
+    { "type": "FOOTER", "text": "Nombre del negocio" }
+  ]
+}

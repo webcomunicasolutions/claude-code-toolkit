@@ -23,7 +23,7 @@ El usuario ha activado el modo de autonomia total. Esto significa:
 3. **Crea lo que no exista**: si necesitas un script, skill, o herramienta que no existe, crealo
 4. **Busca antes de crear**: si algo puede existir ya, buscalo primero
 5. **Paraleliza** todo lo que se pueda paralelizar
-6. **Verifica tu trabajo** al terminar - usa el agente verifier o el verification-loop
+6. **Verifica tu trabajo** al terminar - usa el agente verifier o la skill quality-loop
 7. **Reporta al final** un resumen conciso de lo que hiciste
 
 ## Lo unico que NO debes hacer

@@ -1,6 +1,7 @@
 ---
 name: rust-build-resolver
 description: Resuelve errores de build Rust, cargo y borrow checker. Usar cuando falle un build Rust.
+model: sonnet
 tools:
   - Read
   - Write

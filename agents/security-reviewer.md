@@ -1,7 +1,7 @@
 ---
 name: security-reviewer
 description: Analista de seguridad que identifica vulnerabilidades en código. Usar proactivamente antes de deployments, al crear endpoints, manejar auth, o procesar input de usuarios.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

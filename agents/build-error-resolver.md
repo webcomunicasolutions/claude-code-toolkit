@@ -1,6 +1,7 @@
 ---
 name: build-error-resolver
 description: Resuelve errores de build y compilación rápidamente con cambios mínimos. Usar cuando el build falla y necesitas desbloquearte.
+model: sonnet
 tools:
   - Read
   - Grep

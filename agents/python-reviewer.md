@@ -1,7 +1,7 @@
 ---
 name: python-reviewer
 description: Revisor de código Python - seguridad, type safety, patrones Pythonic. Usar para reviews de código Python, Django, FastAPI, Flask.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

@@ -1,6 +1,6 @@
 ---
 name: e2e-testing
-description: Patrones de testing E2E con Playwright. Page Object Model, manejo de flakiness, configuración cross-browser. Usar cuando se escriban tests end-to-end.
+description: Patrones de testing E2E con Playwright. Page Object Model, manejo de flakiness, configuración cross-browser. Usar cuando se escriban tests end-to-end. NOT for unit tests, API tests, or load testing.
 ---
 
 # E2E Testing con Playwright

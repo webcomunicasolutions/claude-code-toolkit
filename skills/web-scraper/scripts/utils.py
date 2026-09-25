@@ -452,6 +452,7 @@ def render_with_playwright(
     url: str,
     wait_for: str = None,
     timeout: int = 30000,
+    wait_until: str = None,
 ) -> str:
     """Render a page using Playwright via the companion ``render_page.js`` script.
 
@@ -474,6 +475,8 @@ def render_with_playwright(
         )
 
     cmd = ["node", str(_RENDER_SCRIPT), url, "--timeout", str(timeout)]
+    if wait_until:
+        cmd.extend(["--wait-until", wait_until])
     if wait_for:
         cmd.extend(["--wait-for", wait_for])
 

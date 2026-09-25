@@ -1,0 +1,26 @@
+{
+  "name": "envio_factura",
+  "language": "es",
+  "category": "UTILITY",
+  "parameter_format": "POSITIONAL",
+  "components": [
+    { "type": "HEADER", "format": "TEXT", "text": "📄 Tu factura" },
+    {
+      "type": "BODY",
+      "text": "Hola {{1}}, aquí tienes tu factura *{{2}}*. 🐾\n\nPulsa el botón para ver o descargar el PDF 👇\nPara cualquier duda, responde a este mensaje.",
+      "example": { "body_text": [["María", "F-2359"]] }
+    },
+    { "type": "FOOTER", "text": "Nombre del negocio" },
+    {
+      "type": "BUTTONS",
+      "buttons": [
+        {
+          "type": "URL",
+          "text": "Ver factura",
+          "url": "https://TU-DOMINIO/{{1}}",
+          "example": ["https://TU-DOMINIO/doc.php?d=f&id=1&t=abc"]
+        }
+      ]
+    }
+  ]
+}

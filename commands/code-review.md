@@ -6,6 +6,8 @@ description: Revision exhaustiva de codigo con checklist de seguridad
 
 Revision sistematica de cambios no commiteados con foco en seguridad y calidad.
 
+Si se proporcionan argumentos ($ARGUMENTS), enfocar la revision en esos archivos o scope especificado. Si no hay argumentos, revisar los cambios recientes (git diff).
+
 ## Instrucciones
 
 1. Identifica archivos modificados con `git diff --name-only` y `git diff --staged --name-only`

@@ -1,6 +1,6 @@
 ---
 name: autonomous-loops
-description: Patrones para ejecutar Claude Code de forma autónoma en loops. Desde pipelines secuenciales hasta DAGs con múltiples agentes. Usar cuando se necesite automatización repetitiva o CI/CD con IA.
+description: Patrones para ejecutar Claude Code de forma autónoma en loops. Desde pipelines secuenciales hasta DAGs con múltiples agentes. Usar cuando se necesite automatización repetitiva o CI/CD con IA. NOT for interactive workflows requiring human approval between steps.
 ---
 
 # Autonomous Loops

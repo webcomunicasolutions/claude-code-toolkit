@@ -457,10 +457,10 @@ def _fetch_html(url: str, session, args: argparse.Namespace) -> str:
     html, status = fetch_page(url, session=session, retries=args.retries, timeout=30)
 
     if args.javascript:
-        html = render_with_playwright(url, timeout=30000)
+        html = render_with_playwright(url, timeout=60000, wait_until="domcontentloaded")
     elif detect_dynamic_content(html):
         logger.info("Dynamic content detected on %s, using Playwright", url)
-        html = render_with_playwright(url, timeout=30000)
+        html = render_with_playwright(url, timeout=60000, wait_until="domcontentloaded")
 
     return html
 

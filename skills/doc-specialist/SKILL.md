@@ -27,7 +27,7 @@ Generate specialized Claude agent templates from any scraped documentation libra
 
 ```bash
 python3 ~/.claude/skills/doc-specialist/scripts/generate_specialist.py \
-  "/mnt/c/PROYECTOS CLAUDE/biblioteca/elevenlabs-agents-platform" \
+  "~/docs/biblioteca/elevenlabs-agents-platform" \
   --name "ElevenLabs Specialist" \
   --lang es
 ```
@@ -67,3 +67,13 @@ The script expects the output format from `web-scraper` skill:
 - `index.json` - Metadata (URLs, titles, filenames)
 - `FULL_DOCS.md` - All pages consolidated
 - `*.md` - Individual page files
+
+
+## Auto-mejora
+
+Al cerrar cada aplicacion practica de esta skill:
+1. Registrar aprendizajes en `aprendizajes/<caso>.md` (o en esta seccion si es breve)
+2. Si el patron es generalizable, actualizar el cuerpo de este SKILL.md
+3. Si se descubre un error recurrente, anadirlo a una seccion de "Errores conocidos"
+
+Sin esta fase, la skill se fosiliza y pierde valor con el tiempo.

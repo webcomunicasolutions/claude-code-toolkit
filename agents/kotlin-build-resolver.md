@@ -1,6 +1,7 @@
 ---
 name: kotlin-build-resolver
 description: Resuelve errores de build Kotlin y Gradle. Usar cuando falle un build Kotlin.
+model: sonnet
 tools:
   - Read
   - Write

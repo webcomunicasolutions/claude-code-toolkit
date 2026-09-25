@@ -5,8 +5,8 @@
 # Installs agents, hooks, skills, commands, rules, statusline, and optionally
 # pulls additional components from Everything Claude Code (ECC).
 #
-# Run: bash install.sh [--all | --agents | --statusline | --hook | --skills
-#                       | --commands | --rules | --ecc | --ecc-only]
+# Run: bash install.sh [--all | --agents | --statusline | --scripts | --hook
+#                       | --skills | --commands | --rules | --ecc | --ecc-only]
 # =============================================================================
 
 set -e
@@ -44,7 +44,20 @@ install_statusline() {
     info "Installing statusline..."
     cp "$SCRIPT_DIR/statusline/statusline.sh" "$CLAUDE_DIR/statusline.sh"
     success "Statusline installed to $CLAUDE_DIR/statusline.sh"
-    warn "Add to settings.json: \"statusline\": { \"command\": \"bash ~/.claude/statusline.sh\" }"
+    warn "Add to settings.json: \"statusLine\": { \"type\": \"command\", \"command\": \"bash ~/.claude/statusline.sh\" }"
+}
+
+install_scripts() {
+    info "Installing scripts..."
+    mkdir -p "$CLAUDE_DIR/scripts"
+    local count=0
+    for f in "$SCRIPT_DIR"/scripts/*.sh; do
+        [ ! -f "$f" ] && continue
+        cp "$f" "$CLAUDE_DIR/scripts/"
+        chmod +x "$CLAUDE_DIR/scripts/$(basename "$f")"
+        count=$((count + 1))
+    done
+    success "$count scripts installed to $CLAUDE_DIR/scripts/"
 }
 
 install_hook() {
@@ -194,6 +207,7 @@ install_all() {
     install_skills
     install_commands
     install_statusline
+    install_scripts
     install_hook
     echo ""
     info "Importing additional components from ECC..."
@@ -215,44 +229,64 @@ install_all() {
 show_summary() {
     echo ""
     info "Installed components summary:"
-    local agents skills commands rules
+    local agents skills commands rules scripts
     agents=$(find "$CLAUDE_DIR/agents" -name "*.md" 2>/dev/null | wc -l)
     skills=$(find "$CLAUDE_DIR/skills" -name "SKILL.md" 2>/dev/null | wc -l)
     commands=$(find "$CLAUDE_DIR/commands" -name "*.md" 2>/dev/null | wc -l)
     rules=$(find "$CLAUDE_DIR/rules" -name "*.md" 2>/dev/null | wc -l)
+    scripts=$(find "$CLAUDE_DIR/scripts" -name "*.sh" 2>/dev/null | wc -l)
     echo "  Agents:   $agents"
     echo "  Skills:   $skills"
     echo "  Commands: $commands"
     echo "  Rules:    $rules"
+    echo "  Scripts:  $scripts"
     echo ""
 }
 
 # Parse arguments
-case "${1:-}" in
-    --agents)     install_agents ;;
-    --statusline) install_statusline ;;
-    --hook)       install_hook ;;
-    --skills)     install_skills ;;
-    --commands)   install_commands ;;
-    --rules)      install_rules ;;
-    --ecc)        install_ecc ;;
-    --ecc-only)   install_ecc ; show_summary ;;
-    --summary)    show_summary ;;
-    --all|"")     install_all ; show_summary ;;
-    *)
-        echo "Usage: bash install.sh [OPTION]"
-        echo ""
-        echo "Options:"
-        echo "  --all         Install everything (default)"
-        echo "  --agents      Install agents only"
-        echo "  --skills      Install skills only"
-        echo "  --commands    Install commands only"
-        echo "  --rules       Install coding rules only"
-        echo "  --statusline  Install statusline only"
-        echo "  --hook        Install Telegram hook only"
-        echo "  --ecc         Import new components from Everything Claude Code"
-        echo "  --ecc-only    Only import from ECC (skip toolkit install)"
-        echo "  --summary     Show installed component counts"
-        exit 1
-        ;;
-esac
+# Accepts one or more flags in a single invocation (e.g. --commands --agents),
+# not just the first one - each is processed in order, then a single summary
+# is shown if more than one component flag was given.
+if [ $# -eq 0 ]; then
+    install_all
+    show_summary
+    exit 0
+fi
+
+multi=0
+[ $# -gt 1 ] && multi=1
+
+for arg in "$@"; do
+    case "$arg" in
+        --agents)     install_agents ;;
+        --statusline) install_statusline ;;
+        --hook)       install_hook ;;
+        --skills)     install_skills ;;
+        --commands)   install_commands ;;
+        --rules)      install_rules ;;
+        --scripts)    install_scripts ;;
+        --ecc)        install_ecc ;;
+        --ecc-only)   install_ecc ; [ "$multi" -eq 0 ] && show_summary ;;
+        --summary)    show_summary ;;
+        --all)        install_all ; [ "$multi" -eq 0 ] && show_summary ;;
+        *)
+            echo "Usage: bash install.sh [OPTION ...]"
+            echo ""
+            echo "Options (one or more, e.g. --commands --agents):"
+            echo "  --all         Install everything (default)"
+            echo "  --agents      Install agents only"
+            echo "  --skills      Install skills only"
+            echo "  --commands    Install commands only"
+            echo "  --rules       Install coding rules only"
+            echo "  --statusline  Install statusline only"
+            echo "  --scripts     Install helper scripts only"
+            echo "  --hook        Install Telegram hook only"
+            echo "  --ecc         Import new components from Everything Claude Code"
+            echo "  --ecc-only    Only import from ECC (skip toolkit install)"
+            echo "  --summary     Show installed component counts"
+            exit 1
+            ;;
+    esac
+done
+
+[ "$multi" -eq 1 ] && show_summary

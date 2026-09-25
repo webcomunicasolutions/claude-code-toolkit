@@ -2,7 +2,7 @@
 name: test-generator
 description: Genera test cases comprensivos analizando codigo, patrones existentes y edge cases. Usar proactivamente para asegurar cobertura de tests.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: haiku
 ---
 
 # Test Generator - Generador de Tests Experto

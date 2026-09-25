@@ -1,7 +1,7 @@
 ---
 name: java-reviewer
 description: Revisor de código Java y Spring Boot - arquitectura, JPA, seguridad, concurrencia. Usar para reviews de código Java.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

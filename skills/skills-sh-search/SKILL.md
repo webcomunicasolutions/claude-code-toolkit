@@ -72,3 +72,13 @@ npx skills add https://github.com/<owner>/<repo> --skill <skill-name> -g -y
 - Las skills se instalan en `.claude/skills/` del proyecto o globalmente con `-g`
 - Verificar la seguridad de skills antes de instalar (ver audits en la página)
 - El comando `npx skills check` verifica actualizaciones de skills instaladas
+
+
+## Auto-mejora
+
+Al cerrar cada aplicacion practica de esta skill:
+1. Registrar aprendizajes en `aprendizajes/<caso>.md` (o en esta seccion si es breve)
+2. Si el patron es generalizable, actualizar el cuerpo de este SKILL.md
+3. Si se descubre un error recurrente, anadirlo a una seccion de "Errores conocidos"
+
+Sin esta fase, la skill se fosiliza y pierde valor con el tiempo.

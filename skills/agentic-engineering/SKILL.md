@@ -1,6 +1,6 @@
 ---
 name: agentic-engineering
-description: Patrones de ingenieria agentica - workflows dirigidos por IA con supervision humana. Usar cuando se disenan sistemas multi-agente, loops autonomos, o pipelines de IA.
+description: Patrones de ingenieria agentica - workflows dirigidos por IA con supervision humana. Usar cuando se disenan sistemas multi-agente, loops autonomos, o pipelines de IA. NOT for simple one-off tasks or static content generation.
 ---
 
 # Agentic Engineering

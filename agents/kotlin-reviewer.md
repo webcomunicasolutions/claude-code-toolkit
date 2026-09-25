@@ -1,7 +1,7 @@
 ---
 name: kotlin-reviewer
 description: Revisor de código Kotlin y Android/KMP - coroutines, Compose, clean architecture. Usar para reviews de código Kotlin.
-model: sonnet
+model: haiku
 tools:
   - Read
   - Glob

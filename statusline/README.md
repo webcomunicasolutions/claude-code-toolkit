@@ -27,11 +27,13 @@ Rich status bar for Claude Code showing real-time session metrics.
 cp statusline.sh ~/.claude/statusline.sh
 ```
 
-Add to your `~/.claude/settings.json`:
+Add to your `~/.claude/settings.json` (note the capital `L` in `statusLine` and the
+required `type` field - this is the key Claude Code actually reads):
 
 ```json
 {
-  "statusline": {
+  "statusLine": {
+    "type": "command",
     "command": "bash ~/.claude/statusline.sh"
   }
 }
