@@ -81,6 +81,15 @@ install_hook() {
 install_config() {
     info "Installing base configuration..."
     mkdir -p "$CLAUDE_DIR"
+    # jq hace falta para fusionar con el settings.json que Claude Code crea al iniciar sesion
+    if ! command -v jq >/dev/null 2>&1 && command -v apt-get >/dev/null 2>&1; then
+        info "Instalando jq (necesario para fusionar la configuracion)..."
+        if ! sudo apt-get install -y jq >/dev/null 2>&1; then
+            sudo apt-get update -qq >/dev/null 2>&1
+            sudo apt-get install -y jq >/dev/null 2>&1 \
+                || warn "No se pudo instalar jq: ejecuta  bash install-deps.sh  y luego  bash install.sh --config"
+        fi
+    fi
     local base_src="$SCRIPT_DIR/config-base/settings.base.json"
     local dest="$CLAUDE_DIR/settings.json"
     local base; base="$(mktemp)"

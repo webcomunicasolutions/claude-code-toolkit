@@ -17,11 +17,27 @@ A comprehensive collection of agents, skills, commands, rules, hooks, and utilit
 
 ## Quick Install
 
+Tested on **Windows + WSL Ubuntu 24.04** from scratch (October 2026). Install and log in to Claude Code first:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
+claude            # log in, then /exit
+```
+
+Then the toolkit:
+
 ```bash
 git clone https://github.com/webcomunicasolutions/claude-code-toolkit.git
 cd claude-code-toolkit
-bash install.sh
+bash install-deps.sh          # system, Python, Node 22 and Whisper (asks for sudo; ~10-15 min)
+bash install.sh               # asks whether to enable bypass mode
+bash install-deps.sh --check  # everything should show ✓
 ```
+
+Optional, WSL only: passwordless sudo (`echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/90-claude`,
+then `sudo chmod 440 /etc/sudoers.d/90-claude && sudo visudo -c`). Voice dictation needs `sox` (installed by deps); if it
+records nothing, pick the right default microphone in Windows and run `wsl --shutdown`.
 
 Install individual components:
 

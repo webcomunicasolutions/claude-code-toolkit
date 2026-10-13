@@ -38,12 +38,11 @@ install_system() {
     local BROWSER="xvfb"
 
     # Python build dependencies
-    local PYTHON_DEPS="python3 python3-pip"
+    local PYTHON_DEPS="python3 python3-pip python3-venv"
 
-    # Node.js (if not already installed)
-    local NODE_DEPS="nodejs npm"
-
-    local ALL_PKGS="$CORE $DOCS $MEDIA $BROWSER $PYTHON_DEPS $NODE_DEPS"
+    # Node.js va aparte (install_node_runtime): el de apt en Ubuntu 24.04 es el 18 y las
+    # herramientas (playwright, sharp, dev-browser) piden 20 o mas.
+    local ALL_PKGS="$CORE $DOCS $MEDIA $BROWSER $PYTHON_DEPS"
 
     echo "  Packages: $ALL_PKGS"
     echo ""
@@ -52,6 +51,7 @@ install_system() {
         sudo apt-get update -qq
         sudo apt-get install -y $ALL_PKGS
         success "System packages installed"
+        install_node_runtime
     elif command -v brew &>/dev/null; then
         # macOS - some packages have different names
         brew install jq curl bc git pandoc poppler qpdf ffmpeg node python3
@@ -62,6 +62,20 @@ install_system() {
         echo "  $ALL_PKGS"
         return 1
     fi
+}
+
+# ─── Node.js 22 (NodeSource) si falta o es anterior a 20 ─────────────────────
+install_node_runtime() {
+    local major=0
+    command -v node >/dev/null 2>&1 && major=$(node -v | sed 's/^v//; s/\..*//')
+    if [ "$major" -ge 20 ] 2>/dev/null; then
+        success "Node.js $(node -v) OK"
+        return 0
+    fi
+    info "Instalando Node.js 22 (el actual: ${major:-ninguno})..."
+    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt-get install -y nodejs \
+        && success "Node.js $(node -v) instalado" \
+        || warn "No se pudo instalar Node 22: instalalo a mano (https://nodejs.org) antes de --node"
 }
 
 # ─── Python packages (pip) ───────────────────────────────────────────────────
@@ -137,9 +151,17 @@ install_whisper() {
 
     local WHISPER_DIR="$HOME/.local/share/whisper-env"
 
-    if [ -d "$WHISPER_DIR" ]; then
+    if [ -x "$WHISPER_DIR/bin/python3" ] && "$WHISPER_DIR/bin/python3" -c "import faster_whisper" 2>/dev/null; then
         success "Whisper environment already exists at $WHISPER_DIR"
         return 0
+    fi
+    if [ -d "$WHISPER_DIR" ]; then   # entorno a medias de un intento fallido: se aparta, no se borra
+        mv "$WHISPER_DIR" "$WHISPER_DIR.roto-$(date +%Y%m%d-%H%M%S)"
+        warn "Entorno de Whisper incompleto apartado; se crea de nuevo"
+    fi
+    if ! python3 -m venv --help >/dev/null 2>&1 || ! python3 -c "import ensurepip" 2>/dev/null; then
+        info "Falta python3-venv: instalandolo..."
+        sudo apt-get install -y python3-venv || { error "Instala python3-venv: sudo apt install python3-venv"; return 1; }
     fi
 
     python3 -m venv "$WHISPER_DIR"
@@ -215,7 +237,7 @@ check_deps() {
         echo -e "  ${YELLOW}○${NC} faster-whisper (run: bash install-deps.sh --whisper)"
     fi
 
-    if command -v chromium-browser &>/dev/null || command -v google-chrome &>/dev/null || npx playwright install --dry-run chromium &>/dev/null 2>&1; then
+    if ls -d "$HOME"/.cache/ms-playwright/chromium-* &>/dev/null || command -v chromium-browser &>/dev/null || command -v google-chrome &>/dev/null; then
         echo -e "  ${GREEN}✓${NC} Chromium/Chrome (browser automation)"
     else
         echo -e "  ${YELLOW}○${NC} Chromium (run: npx playwright install chromium)"
@@ -230,7 +252,7 @@ check_deps() {
 }
 
 # ─── Main ────────────────────────────────────────────────────────────────────
-case "${1:-}" in
+case "${1:---all}" in
     --system)  install_system ;;
     --python)  install_python ;;
     --node)    install_node ;;
@@ -248,8 +270,7 @@ case "${1:-}" in
         echo ""
         install_node
         echo ""
-        echo -e "${YELLOW}[OPTIONAL]${NC} Audio/video transcription (faster-whisper, ~500MB):"
-        echo "  Run: bash install-deps.sh --whisper"
+        install_whisper || warn "Whisper no se instalo: bash install-deps.sh --whisper"
         echo ""
         check_deps
         ;;
@@ -257,7 +278,7 @@ case "${1:-}" in
         echo "Usage: bash install-deps.sh [OPTION]"
         echo ""
         echo "Options:"
-        echo "  --all      Install all dependencies (system + python + node)"
+        echo "  --all      Install all dependencies (system + python + node + whisper) [default]"
         echo "  --system   Install system packages only (apt/brew)"
         echo "  --python   Install Python packages only (pip)"
         echo "  --node     Install Node.js packages only (npm)"
