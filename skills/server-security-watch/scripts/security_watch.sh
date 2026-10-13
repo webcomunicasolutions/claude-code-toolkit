@@ -40,7 +40,7 @@ finding() { FINDINGS="${FINDINGS}$1"$'\n'; log "HALLAZGO: $1"; }
 send_telegram() {
     local msg="$1"
     for cid in $CHAT_ID; do
-        curl -s -m 20 -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+        curl -s -m 20 -X POST -K <(printf 'url = "https://api.telegram.org/bot%s/sendMessage"\n' "$BOT_TOKEN") \
             -d "chat_id=${cid}" \
             -d "parse_mode=HTML" \
             --data-urlencode "text=${msg}" > /dev/null
@@ -149,6 +149,16 @@ fi
 # de ESTE servidor (salida de identify_ips.sh), o alertara de tu propia gente.
 # =============================================================================
 KNOWN="$BASE/known_nets.txt"
+# Filtra las lineas cuya IP NO pertenece a ninguna red conocida. Compara por PREFIJO EXACTO de octetos
+# ("85.1" cubre 85.1.x.x pero NO 185.1.x.x ni 85.10.x.x). Antes se usaba grep -vFf (subcadena) y una
+# red conocida ocultaba accesos de redes ajenas que la contenian.
+filtrar_desconocidas() {
+  awk -v F="$KNOWN" 'BEGIN{ while ((getline k < F) > 0) { gsub(/[ \t\r]/, "", k); sub(/\.$/, "", k)
+                             if (k != "" && k !~ /^#/) K[++n] = k } }
+       { ip = $0; if (match($0, /from [0-9.]+/)) ip = substr($0, RSTART + 5, RLENGTH - 5)
+         ok = 0; for (i = 1; i <= n; i++) if (ip == K[i] || index(ip, K[i] ".") == 1) { ok = 1; break }
+         if (!ok) print }'
+}
 if [ ! -f "$KNOWN" ]; then
     : > "$KNOWN"   # vacio a proposito: un fichero con comentarios contaria como patrones en grep -Ff
     log "known_nets.txt creado VACIO: precargar los rangos conocidos de este servidor"
@@ -163,7 +173,7 @@ VISTAS=$(journalctl -u ssh --since "70 minutes ago" --no-pager 2>/dev/null \
     | grep "Accepted" \
     | grep -oE 'from [0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}' | sort -u)
 
-NEWNETS=$(printf '%s\n' "$VISTAS" | grep -vFf "$KNOWN" 2>/dev/null || true)
+NEWNETS=$(printf '%s\n' "$VISTAS" | filtrar_desconocidas || true)
 
 if [ -s "$ALERT_ALWAYS" ]; then
     REINCIDENTES=$(printf '%s\n' "$VISTAS" | grep -Fxf "$ALERT_ALWAYS" 2>/dev/null || true)
@@ -189,7 +199,7 @@ fi
 # =============================================================================
 ROOTPW=$(journalctl -u ssh --since "70 minutes ago" --no-pager 2>/dev/null \
     | grep "Accepted password for root" \
-    | grep -vFf "$KNOWN" | tail -3 | sed -E 's/.*sshd\[[0-9]+\]: //' || true)
+    | filtrar_desconocidas | tail -3 | sed -E 's/.*sshd\[[0-9]+\]: //' || true)
 if [ -n "$ROOTPW" ]; then
     finding "<b>ROOT ENTRO POR CONTRASENA DESDE RANGO DESCONOCIDO</b>%0A<pre>${ROOTPW}</pre>"
 fi
@@ -274,7 +284,7 @@ if [ "$(date +%u)" = "1" ] && [ "$(date +%H)" -ge 9 ] && [ "$CUR_WEEK" != "$LAST
         | grep -c "Accepted password for root" || echo 0)
     NUEVOS=$(journalctl -u ssh --since "7 days ago" --no-pager 2>/dev/null \
         | grep "Accepted" | grep -oE 'from [0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}' \
-        | sort -u | grep -vFf "$KNOWN" | wc -l || echo 0)
+        | sort -u | filtrar_desconocidas | wc -l || echo 0)
 
     send_telegram "OK <b>Vigilante seguridad - ${HOST}</b>%0AResumen semanal $(date '+%d/%m')%0A%0A\
 Chequeos sin cambios: ${SEM_OK}%0AAlertas enviadas: ${SEM_AL}%0ALogins root por contrasena (7d): ${ROOT_PW}%0A\

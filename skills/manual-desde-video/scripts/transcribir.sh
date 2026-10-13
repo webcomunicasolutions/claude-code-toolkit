@@ -8,7 +8,7 @@ IN="$1"; OUT="$2"; LANG_CODE="${3:-spa}"
 mkdir -p "$OUT"
 ffmpeg -v error -y -i "$IN" -vn -ac 1 -b:a 64k "$OUT/audio.mp3"
 curl -sf -o "$OUT/scribe.json" -w "Scribe HTTP %{http_code} en %{time_total}s\n" \
-  -H "xi-api-key: $ELEVENLABS_API_KEY" \
+  -H @<(printf 'xi-api-key: %s\n' "$ELEVENLABS_API_KEY") \
   -F model_id=scribe_v1 -F language_code="$LANG_CODE" -F diarize=true -F tag_audio_events=false \
   -F file=@"$OUT/audio.mp3" https://api.elevenlabs.io/v1/speech-to-text
 python3 - "$OUT" <<'PY'

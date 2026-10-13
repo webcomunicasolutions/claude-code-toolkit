@@ -32,16 +32,25 @@ TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 SSH=(ssh -o ConnectTimeout=30 -o BatchMode=yes -p "$PUERTO" -i "$CLAVE")
 DEST="$USUARIO@$HOST"
 
+# Carpeta PRIVADA en el remoto (700, del usuario SSH). NUNCA rutas fijas en /tmp: otro usuario del
+# servidor podria crear o cambiar el fichero entre la subida y la ejecucion como root.
+RDIR=""
+crear_rdir() {
+  RDIR=$("${SSH[@]}" "$DEST" 'umask 077; mktemp -d /tmp/dw.XXXXXXXXXX' 2>/dev/null)
+  [[ "$RDIR" =~ ^/tmp/dw\.[A-Za-z0-9]{10}$ ]] || { echo "  ❌ no se pudo crear carpeta temporal privada en el remoto"; exit 1; }
+}
+borrar_rdir() { [ -n "$RDIR" ] && "${SSH[@]}" "$DEST" "rm -rf -- '$RDIR'" >/dev/null 2>&1; }
+
 # Ejecuta un script COMO ROOT en el remoto, con o sin password de sudo
 remoto_root() {
   local script="$1"
-  scp -q -P "$PUERTO" -i "$CLAVE" "$script" "$DEST:/tmp/_dw.sh" || return 1
+  scp -q -P "$PUERTO" -i "$CLAVE" "$script" "$DEST:$RDIR/_dw.sh" || return 1
   if [ -n "$VAULTPW" ]; then
     local fichero="${VAULTPW%%:*}" ruta="${VAULTPW#*:}"
     jq -r "$ruta" "$HOME/.credentials/$fichero" | \
-      "${SSH[@]}" "$DEST" 'sudo -S -p "" bash /tmp/_dw.sh 2>&1; rm -f /tmp/_dw.sh'
+      "${SSH[@]}" "$DEST" "sudo -S -p '' bash '$RDIR/_dw.sh' '$RDIR' 2>&1"
   else
-    "${SSH[@]}" "$DEST" 'S=""; [ "$(id -u)" != "0" ] && S="sudo -n"; $S bash /tmp/_dw.sh 2>&1; rm -f /tmp/_dw.sh'
+    "${SSH[@]}" "$DEST" "S=''; [ \"\$(id -u)\" != 0 ] && S='sudo -n'; \$S bash '$RDIR/_dw.sh' '$RDIR' 2>&1"
   fi
 }
 
@@ -52,23 +61,25 @@ echo "=========== $HOST ($USUARIO, puerto $PUERTO) ==========="
 EQUIPO=$("${SSH[@]}" "$DEST" 'hostname -s' 2>/dev/null)
 echo "  conectado: $EQUIPO"
 
-# ---- 1) subir los dos scripts
-scp -q -P "$PUERTO" -i "$CLAVE" "$AQUI/security_watch.sh" "$AQUI/service_watch.sh" "$DEST:/tmp/" || {
+# ---- 1) subir los dos scripts (a la carpeta privada)
+crear_rdir; trap 'borrar_rdir; rm -rf "$TMP"' EXIT
+scp -q -P "$PUERTO" -i "$CLAVE" "$AQUI/security_watch.sh" "$AQUI/service_watch.sh" "$DEST:$RDIR/" || {
   echo "  ❌ fallo al subir los scripts"; exit 1; }
 
 # ---- 2) telegram.conf: si no existe, se copia del que se le pase por env TELEGRAM_CONF
 if [ -n "${TELEGRAM_CONF:-}" ] && [ -r "$TELEGRAM_CONF" ]; then
-  scp -q -P "$PUERTO" -i "$CLAVE" "$TELEGRAM_CONF" "$DEST:/tmp/_tg.conf"
+  scp -q -P "$PUERTO" -i "$CLAVE" "$TELEGRAM_CONF" "$DEST:$RDIR/_tg.conf"
 fi
 
 cat > "$TMP/instalar.sh" <<'INS'
 #!/bin/bash
+D="$1"   # carpeta privada donde se subieron los ficheros (700)
+[[ "$D" =~ ^/tmp/dw\.[A-Za-z0-9]{10}$ ]] || { echo "  ❌ carpeta de trabajo invalida"; exit 1; }
 mkdir -p /root/scripts /etc/secwatch /root/_pendiente_borrado
 [ -f /root/scripts/security_watch.sh ] && cp /root/scripts/security_watch.sh "/root/_pendiente_borrado/security_watch.sh.$(date +%Y%m%d)"
-install -m 700 -o root -g root /tmp/security_watch.sh /root/scripts/security_watch.sh
-install -m 700 -o root -g root /tmp/service_watch.sh  /root/scripts/service_watch.sh
-[ -f /tmp/_tg.conf ] && [ ! -f /etc/secwatch/telegram.conf ] && install -m 600 -o root -g root /tmp/_tg.conf /etc/secwatch/telegram.conf
-rm -f /tmp/security_watch.sh /tmp/service_watch.sh /tmp/_tg.conf
+install -m 700 -o root -g root "$D/security_watch.sh" /root/scripts/security_watch.sh
+install -m 700 -o root -g root "$D/service_watch.sh"  /root/scripts/service_watch.sh
+[ -f "$D/_tg.conf" ] && [ ! -f /etc/secwatch/telegram.conf ] && install -m 600 -o root -g root "$D/_tg.conf" /etc/secwatch/telegram.conf
 echo "  scripts: md5 $(md5sum /root/scripts/security_watch.sh | cut -c1-8) / $(md5sum /root/scripts/service_watch.sh | cut -c1-8)"
 
 # ---- comprobar que PUEDE avisar (hallazgo 14: un vigilante mudo no sirve de nada)
@@ -76,7 +87,7 @@ if [ ! -f /etc/secwatch/telegram.conf ]; then
   echo "  ❌ FALTA /etc/secwatch/telegram.conf -> este servidor NO PODRA AVISAR"
 else
   . /etc/secwatch/telegram.conf
-  if curl -s --max-time 20 -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+  if curl -s --max-time 20 -X POST -K <(printf 'url = "https://api.telegram.org/bot%s/sendMessage"\n' "$BOT_TOKEN") \
        --data-urlencode "chat_id=${CHAT_ID}" \
        --data-urlencode "text=✅ $(hostname -s): vigilancia desplegada, este servidor puede avisar." \
        | grep -q '"ok":true'; then echo "  ✅ puede avisar por Telegram"

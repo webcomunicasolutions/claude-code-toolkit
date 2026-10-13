@@ -32,13 +32,16 @@ CSS = """@page{size:A4;margin:40mm 18mm 26mm 18mm}body{font-family:"%(fuente)s",
 CSS = CSS % {"fuente": marca.get("fuente_html", "Arial"), "marca": marca["colores"]["fondo"],
              "acento": marca["colores"].get("linea", marca["colores"]["fondo"])}
 
+from html import escape as esc
+os.umask(0o077)   # las fichas llevan contraseñas: solo legibles por el usuario
+
 def html_ficha(u, d):
     return f"""<!doctype html><html lang="es"><head><meta charset="utf-8"><style>{CSS}</style></head><body>
-<p class="nombre">{d.get('nombre', u)}</p><p class="rol">{cfg['roles'].get(d.get('rol',''), d.get('rol',''))}</p>
+<p class="nombre">{esc(d.get('nombre', u))}</p><p class="rol">{esc(cfg['roles'].get(d.get('rol',''), d.get('rol','')))}</p>
 <div class="caja"><div class="datos">
 <div class="et">Dirección</div><div class="url">{cfg['url'].replace('https://','')}</div>
-<div class="et">Usuario</div><div class="val">{u}</div>
-<div class="et">Contraseña</div><div class="val">{d[cfg['vault'].get('campo_password','password')]}</div>
+<div class="et">Usuario</div><div class="val">{esc(u)}</div>
+<div class="et">Contraseña</div><div class="val">{esc(d[cfg['vault'].get('campo_password','password')])}</div>
 </div><div class="qr"><img src="{QR}">Apunta con la cámara<br>para abrir la web</div></div>
 <ol><li>Lee el código QR con la cámara del móvil, o escribe la dirección en Chrome o Safari.</li>
 <li>Escribe tu usuario y tu contraseña exactamente como aparecen aquí y pulsa <strong>ENTRAR</strong>.</li>

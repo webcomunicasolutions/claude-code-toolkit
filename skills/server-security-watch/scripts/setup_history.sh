@@ -55,9 +55,11 @@ for u in $USUARIOS; do
     fi
 
     hist="$home/.bash_history"
-    if [ ! -f "$hist" ]; then
+    if [ -L "$hist" ]; then
+        echo "       ! $hist es un enlace simbolico: NO se toca (posible intento de escalada)"
+    elif [ ! -e "$hist" ]; then
         touch "$hist"
-        chown "$u:$(id -gn "$u" 2>/dev/null || echo "$u")" "$hist" 2>/dev/null
+        chown -h "$u:$(id -gn "$u" 2>/dev/null || echo "$u")" "$hist" 2>/dev/null
         chmod 600 "$hist"
         echo "       + creado .bash_history (no existia)"
     fi

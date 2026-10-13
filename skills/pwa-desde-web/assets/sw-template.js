@@ -1,3 +1,4 @@
+const OFFLINE_URL = '/offline.html';   // opcional: pagina estatica sin datos privados
 /* Service worker — PWA de cascaron sobre web existente.
  * Regla de oro: cachear SOLO el "cascaron" estatico (CSS/JS/imagenes/fuentes) para que la app
  * abra rapido e instalable; NUNCA cachear los datos (ajustar prefijos abajo), que siempre
@@ -33,7 +34,9 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(staleWhileRevalidate(req));
     return;
   }
-  // Navegacion: network-first, con la cache como red de seguridad si no hay conexion
+  // Navegacion: SIEMPRE a la red. Las paginas de una web con login NO se guardan en cache
+  // (seguirian visibles sin conexion y tras cerrar sesion, p. ej. en un movil compartido).
+  // Sin red se muestra una pagina generica (OFFLINE_URL, si la web la tiene).
   if (req.mode === 'navigate') {
     e.respondWith(networkFirst(req));
     return;
@@ -51,14 +54,11 @@ async function staleWhileRevalidate(req) {
 }
 
 async function networkFirst(req) {
-  const cache = await caches.open(CACHE);
   try {
-    const res = await fetch(req);
-    if (res && res.ok) cache.put(req, res.clone());
-    return res;
+    return await fetch(req);
   } catch (err) {
-    const cached = await cache.match(req);
-    if (cached) return cached;
-    throw err;
+    const offline = await caches.match(OFFLINE_URL);
+    return offline || new Response('Sin conexion. Vuelve a intentarlo cuando tengas red.',
+      { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 }

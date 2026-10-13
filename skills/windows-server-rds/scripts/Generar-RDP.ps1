@@ -148,6 +148,11 @@ if ($Usuarios) {
         Where-Object { $_ } |
         Select-Object -Unique
 
+    # Formato estricto SIEMPRE (aunque no se pueda leer el grupo, p. ej. Windows en otro idioma):
+    # el nombre acaba dentro de un .cmd que se ejecuta elevado.
+    $malos = $Usuarios | Where-Object { $_ -notmatch '^[A-Za-z0-9._-]{1,64}$' }
+    if ($malos) { throw ("Nombre de usuario no valido: " + ($malos -join ', ')) }
+
     if ($miembros.Count -gt 0) {
         $inexistentes = $Usuarios | Where-Object { $miembros -notcontains $_ }
         if ($inexistentes) {

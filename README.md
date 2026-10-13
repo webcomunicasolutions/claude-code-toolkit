@@ -11,7 +11,7 @@ A comprehensive collection of agents, skills, commands, rules, hooks, and utilit
 | [**Commands**](commands/) | 23 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
 | [**Rules**](rules/) | 34 | Coding standards for 12+ languages and cross-cutting concerns |
 | [**Hooks**](hooks/) | 3 | Context-usage warning, audit reminder and Telegram approval |
-| [**Base config**](config-base/) | 2 | `settings.json` (bypass + delete blocks + Opus + statusline + voice) and a `CLAUDE.md` template |
+| [**Base config**](config-base/) | 2 | `settings.json` (Opus, delete blocks, optional bypass, statusline, voice) and a `CLAUDE.md` template |
 | [**Scripts**](scripts/) | 2 | Memory-size check and Telegram voice notes |
 | [**Statusline**](statusline/) | 1 | Rich status bar with context usage, tokens, costs, and git info |
 
@@ -39,10 +39,11 @@ bash install.sh --ecc         # Import extras from Everything Claude Code
 
 ## What's new (October 2026)
 
-- **Base configuration (`--config`)**: a ready-to-work `settings.json` — Opus as main model, **bypass mode with
-  destructive commands blocked** (`rm`, `git clean`, `git push --force`, `docker volume rm`…), statusline, voice
-  dictation and the context-usage warning hook — plus a `CLAUDE.md` template that loads the working rules.
+- **Base configuration (`--config`)**: a ready-to-work `settings.json` — Opus as main model, direct destructive
+  commands blocked (`rm`, `git clean`, `git push --force`, `docker volume rm`…; not a complete barrier), optional
+  **bypass mode (asked at install, or `TOOLKIT_BYPASS=1`)**, statusline, voice dictation and the context-usage warning hook — plus a `CLAUDE.md` template that loads the working rules.
   If you already have a `settings.json`, it is **merged** (your values win, a backup is kept).
+- **Everything Claude Code is now opt-in** (`--ecc`): `install.sh` alone installs only this toolkit.
 - **Installer fix**: skills are now copied **complete** (scripts, references, templates). Before, only `SKILL.md`
   was copied, so skills like `docx`, `xlsx`, `pdf` or `gmail-api` arrived without their tools.
 - **New skills**: `gmail-api` (your own Gmail via OAuth, step-by-step setup), `llmwhisperer` and `glm-ocr` (OCR),

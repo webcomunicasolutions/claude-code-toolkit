@@ -47,7 +47,7 @@ avisar() {
   # shellcheck disable=SC1090
   . "$CONF"
   curl -s --max-time 20 -X POST \
-    "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+    -K <(printf 'url = "https://api.telegram.org/bot%s/sendMessage"\n' "$BOT_TOKEN") \
     --data-urlencode "chat_id=${CHAT_ID}" \
     --data-urlencode "text=${texto}" >/dev/null 2>&1
   log "AVISO ENVIADO: $(echo "$texto" | head -1)"

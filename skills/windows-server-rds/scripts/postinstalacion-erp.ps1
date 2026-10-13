@@ -20,6 +20,9 @@
     Ejecutable de el ERP. Si no se indica, lo busca en C:\erp.
 
 .PARAMETER DarPermisos
+    SEGURIDAD: da Modify a los usuarios sobre TODA la carpeta del ERP, ejecutables incluidos. En un
+    servidor RDS multipuesto, un usuario podria sustituir el .exe y los demas lo ejecutarian. Usalo solo
+    si el ERP lo exige; si guarda los datos en una subcarpeta, da el permiso solo ahi.
     Concede al grupo CLIENTE-Datos permiso de MODIFICAR en las carpetas de datos
     que el ERP necesite escribir. Leer antes el aviso que imprime el script.
 

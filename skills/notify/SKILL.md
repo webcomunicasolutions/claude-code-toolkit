@@ -38,7 +38,8 @@ Si falta una variable, informar de cual y no intentar ese canal.
 ### Enviar Telegram
 
 ```bash
-curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+# El token va por -K (fichero de config en memoria), no en la linea de comandos: asi no se ve con `ps`
+curl -s -X POST -K <(printf 'url = "https://api.telegram.org/bot%s/sendMessage"\n' "$TELEGRAM_BOT_TOKEN") \
     --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
     --data-urlencode "text=MENSAJE" \
     --data-urlencode "parse_mode=Markdown"

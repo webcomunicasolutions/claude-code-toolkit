@@ -6,6 +6,7 @@ Comprueba: login de cada usuario (N de N), contraseña impresa == vault, QR legi
 y correcto, y que no quedan restos de la marca anterior.
 """
 import json, os, subprocess, sys
+import os, tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from capturar import credencial, entrar
 from playwright.sync_api import sync_playwright
@@ -38,7 +39,7 @@ for u in cfg["trabajadores"]:
 print("== 3. QR ==")
 try:
     import cv2
-    png = "/tmp/_qr_check"
+    png = os.path.join(tempfile.mkdtemp(), "qr_check")
     subprocess.run(["pdftoppm", "-png", "-r", "200", "-singlefile",
                     f"{fichas}/Ficha-acceso-{cfg['trabajadores'][0]}.pdf", png], check=True)
     v, _, _ = cv2.QRCodeDetector().detectAndDecode(cv2.imread(png + ".png"))

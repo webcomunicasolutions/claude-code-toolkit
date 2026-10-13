@@ -131,6 +131,11 @@ catch {
 }
 
 # --- 2) certificado de firma en Editores de confianza + Raiz ---------------
+# SEGURIDAD: es un certificado autofirmado de FIRMA DE CODIGO que queda de confianza en TODO el equipo
+# (Root + TrustedPublisher). Hace falta para que los .rdp firmados no avisen, pero quien tenga su clave
+# privada (el .pfx que exporta crear-certs-rdp.ps1) podra firmar codigo que este PC acepte sin aviso.
+# Guarda el .pfx fuera del servidor y con contrasena fuerte, y si se filtra: borra el certificado de los
+# PCs (certlm.msc) y genera otro. El certificado TLS (paso 4) solo vale para el nombre del servidor.
 foreach ($store in 'TrustedPublisher', 'Root') {
     Import-Certificate -FilePath $certFirma.FullName -CertStoreLocation "Cert:\LocalMachine\$store" | Out-Null
 }

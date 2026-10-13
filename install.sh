@@ -81,8 +81,26 @@ install_hook() {
 install_config() {
     info "Installing base configuration..."
     mkdir -p "$CLAUDE_DIR"
-    local base="$SCRIPT_DIR/config-base/settings.base.json"
+    local base_src="$SCRIPT_DIR/config-base/settings.base.json"
     local dest="$CLAUDE_DIR/settings.json"
+    local base; base="$(mktemp)"
+    # El modo bypass (Claude actua sin pedir permiso) SOLO se activa si quien instala lo confirma.
+    local bypass="n"
+    if [ "${TOOLKIT_BYPASS:-}" = "1" ]; then bypass="s"
+    elif [ -t 0 ]; then
+        echo ""
+        warn "Modo bypass: Claude ejecuta sin pedir permiso en cada accion. Es comodo pero arriesgado."
+        warn "Los borrados DIRECTOS (rm, git clean, git push --force, docker volume rm...) quedan bloqueados,"
+        warn "pero NO es una barrera completa: mv, python, dd o git reset --hard pueden seguir destruyendo datos."
+        read -r -p "¿Activar modo bypass? [s/N] " bypass
+    fi
+    if [[ "$bypass" =~ ^[sSyY] ]]; then
+        cp "$base_src" "$base"; info "Modo bypass: ACTIVADO"
+    else
+        jq 'del(.permissions.defaultMode, .skipDangerousModePermissionPrompt)' "$base_src" > "$base" 2>/dev/null \
+          || { error "jq necesario para --config"; return 1; }
+        info "Modo bypass: NO activado (Claude pedira permiso). Se activa luego con: TOOLKIT_BYPASS=1 bash install.sh --config"
+    fi
     if [ ! -f "$dest" ]; then
         cp "$base" "$dest"
         success "settings.json creado desde la plantilla"
@@ -94,15 +112,22 @@ install_config() {
         cp "$dest" "$bak"
         # Lo tuyo manda; de la plantilla se anaden las claves que te falten,
         # los bloqueos (deny) se suman y el hook de contexto se anade si no estaba.
-        jq -s '
+        if ! jq -s '
           .[0] as $b | .[1] as $c
           | ($b * $c)
           | .permissions.deny = ((($b.permissions.deny // []) + ($c.permissions.deny // [])) | unique)
           | .hooks.PostToolUse = (
               ($c.hooks.PostToolUse // []) as $u
               | if ($u | tostring | test("aviso-contexto")) then $u else $u + $b.hooks.PostToolUse end)
-        ' "$base" "$bak" > "$dest.tmp" && mv "$dest.tmp" "$dest"
-        success "settings.json fusionado (copia del anterior: $bak)"
+        ' "$base" "$bak" > "$dest.tmp" 2>/dev/null; then
+            mv "$dest.tmp" "$dest.fallido" 2>/dev/null
+            error "No pude fusionar tu settings.json (¿tiene comentarios o JSON invalido?). No lo he tocado."
+            cp "$base" "$CLAUDE_DIR/settings.toolkit.json"
+            warn "Plantilla en $CLAUDE_DIR/settings.toolkit.json: fusionala a mano"
+        else
+            mv "$dest.tmp" "$dest"
+            success "settings.json fusionado (copia del anterior: $bak)"
+        fi
     fi
     if [ ! -f "$CLAUDE_DIR/CLAUDE.md" ]; then
         cp "$SCRIPT_DIR/config-base/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
@@ -111,9 +136,7 @@ install_config() {
         cp "$SCRIPT_DIR/config-base/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md.toolkit"
         info "Ya tenias CLAUDE.md: la plantilla queda en CLAUDE.md.toolkit para comparar"
     fi
-    warn "Modo bypass ACTIVADO: Claude no pide permiso para cada accion. Los borrados (rm, git clean,"
-    warn "docker volume rm...) siguen bloqueados en permissions.deny. Para volver a modo con permisos:"
-    warn "  quita \"defaultMode\": \"bypassPermissions\" de ~/.claude/settings.json"
+    rm -f "$base" 2>/dev/null || true
 }
 
 install_skills() {
@@ -124,7 +147,12 @@ install_skills() {
         local skill_name
         skill_name=$(basename "$skill_dir")
         if [ -f "$skill_dir/SKILL.md" ]; then
-            # Copia la skill COMPLETA (scripts, referencias, plantillas), no solo SKILL.md
+            # Copia la skill COMPLETA (scripts, referencias, plantillas), no solo SKILL.md.
+            # Si ya tenias una skill con ese nombre y es distinta, se guarda copia antes de pisarla.
+            if [ -d "$CLAUDE_DIR/skills/$skill_name" ] && ! diff -rq "$skill_dir" "$CLAUDE_DIR/skills/$skill_name" >/dev/null 2>&1; then
+                local bak_dir="$CLAUDE_DIR/_backup_toolkit/$(date +%Y%m%d-%H%M%S)/skills"
+                mkdir -p "$bak_dir" && cp -r "$CLAUDE_DIR/skills/$skill_name" "$bak_dir/"
+            fi
             mkdir -p "$CLAUDE_DIR/skills/$skill_name"
             cp -r "$skill_dir"/. "$CLAUDE_DIR/skills/$skill_name/"
             count=$((count + 1))
@@ -258,8 +286,7 @@ install_all() {
     install_hook
     install_config
     echo ""
-    info "Importing additional components from ECC..."
-    install_ecc
+    info "Componentes extra de Everything Claude Code (200+): opcionales, con  bash install.sh --ecc"
     echo ""
     success "All components installed!"
     echo ""
