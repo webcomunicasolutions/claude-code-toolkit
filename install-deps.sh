@@ -32,7 +32,7 @@ install_system() {
     local DOCS="pandoc poppler-utils libreoffice qpdf libpango-1.0-0 libpangoft2-1.0-0 tesseract-ocr tesseract-ocr-spa"
 
     # Media processing
-    local MEDIA="ffmpeg imagemagick"
+    local MEDIA="ffmpeg imagemagick sox libsox-fmt-pulse"   # sox + pulse: dictado por voz de Claude Code en WSL
 
     # Screenshot/browser automation
     local BROWSER="xvfb"
@@ -176,7 +176,7 @@ check_deps() {
     local missing=0
 
     echo -e "${BLUE}System tools:${NC}"
-    for cmd in jq curl bc git gh zip unzip pandoc pdftotext libreoffice qpdf ffmpeg convert tesseract xvfb-run node npm python3 pip3 dev-browser; do
+    for cmd in jq curl bc git gh zip unzip pandoc pdftotext libreoffice qpdf ffmpeg convert sox tesseract xvfb-run node npm python3 pip3 dev-browser; do
         if command -v "$cmd" &>/dev/null; then
             echo -e "  ${GREEN}✓${NC} $cmd"
         else
