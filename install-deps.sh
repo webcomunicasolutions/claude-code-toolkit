@@ -26,13 +26,13 @@ install_system() {
     info "Installing system packages..."
 
     # Core tools (hooks, statusline, general usage)
-    local CORE="jq curl bc git"
+    local CORE="jq curl bc git gh zip unzip whois dnsutils"
 
     # Document processing
     local DOCS="pandoc poppler-utils libreoffice qpdf libpango-1.0-0 libpangoft2-1.0-0 tesseract-ocr tesseract-ocr-spa"
 
     # Media processing
-    local MEDIA="ffmpeg"
+    local MEDIA="ffmpeg imagemagick"
 
     # Screenshot/browser automation
     local BROWSER="xvfb"
@@ -86,10 +86,13 @@ install_python() {
     # Voz (/audio: notas de voz por Telegram) y HTML -> PDF (recibos, manuales)
     local VOZ="edge-tts weasyprint"
 
+    # Otros que usan las skills (PowerPoint, QR de fichas, YAML, Playwright en Python, descarga de video)
+    local EXTRA="python-pptx qrcode pyyaml playwright html-to-markdown yt-dlp"
+
     # PPTX extraction
     local PPTX='markitdown[pptx]'
 
-    local ALL_PIP="$PDF $DOCS $WEB $MEDIA $YOUTUBE $VOZ"
+    local ALL_PIP="$PDF $DOCS $WEB $MEDIA $YOUTUBE $VOZ $EXTRA"
 
     echo "  Packages: $ALL_PIP $PPTX"
     echo ""
@@ -106,7 +109,7 @@ install_python() {
 install_node() {
     info "Installing Node.js packages..."
 
-    local PACKAGES="playwright pptxgenjs docx sharp react react-dom react-icons"
+    local PACKAGES="playwright pptxgenjs docx sharp react react-dom react-icons dev-browser"
 
     echo "  Packages: $PACKAGES"
     echo ""
@@ -120,6 +123,9 @@ install_node() {
     info "Installing Playwright browsers (Chromium)..."
     npx playwright install chromium 2>/dev/null || \
         warn "Could not install Playwright browsers automatically"
+
+    # Navegador del skill dev-browser (Claude maneja webs: formularios, capturas, portales)
+    command -v dev-browser >/dev/null 2>&1 && { dev-browser install 2>/dev/null || warn "dev-browser install failed"; }
 
     success "Node packages installed"
 }
@@ -170,7 +176,7 @@ check_deps() {
     local missing=0
 
     echo -e "${BLUE}System tools:${NC}"
-    for cmd in jq curl bc git pandoc pdftotext libreoffice qpdf ffmpeg xvfb-run node npm python3 pip3; do
+    for cmd in jq curl bc git gh zip unzip pandoc pdftotext libreoffice qpdf ffmpeg convert tesseract xvfb-run node npm python3 pip3 dev-browser; do
         if command -v "$cmd" &>/dev/null; then
             echo -e "  ${GREEN}✓${NC} $cmd"
         else
@@ -181,7 +187,7 @@ check_deps() {
 
     echo ""
     echo -e "${BLUE}Python packages:${NC}"
-    for pkg in pypdf pdfplumber reportlab pytesseract pdf2image openpyxl pandas defusedxml bs4 lxml nodriver PIL imageio numpy youtube_transcript_api markitdown requests edge_tts weasyprint; do
+    for pkg in pypdf pdfplumber reportlab pytesseract pdf2image openpyxl pandas defusedxml bs4 lxml nodriver PIL imageio numpy youtube_transcript_api markitdown requests edge_tts weasyprint pptx qrcode yaml playwright yt_dlp; do
         if python3 -c "import $pkg" 2>/dev/null; then
             echo -e "  ${GREEN}✓${NC} $pkg"
         else
