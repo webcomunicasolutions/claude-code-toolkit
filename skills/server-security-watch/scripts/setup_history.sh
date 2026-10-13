@@ -40,6 +40,16 @@ esac
 EOF
 )
 
+# Todo lo que se escribe en el home de un usuario se hace CON SUS PERMISOS, no como root:
+# si el usuario pone un enlace simbolico (~/.bashrc -> /etc/...), solo podra tocar lo que ya
+# podia tocar el mismo. Comprobar "-L" antes no basta (carrera entre comprobar y escribir).
+como() {   # como <usuario> <comando...>
+    local usr="$1"; shift
+    if [ "$usr" = "root" ] || [ "$(id -un)" = "$usr" ]; then "$@"
+    elif command -v runuser >/dev/null 2>&1; then runuser -u "$usr" -- "$@"
+    else su -s /bin/sh "$usr" -c '"$0" "$@"' -- "$@"; fi
+}
+
 for u in $USUARIOS; do
     home=$(getent passwd "$u" | cut -d: -f6)
     [ -n "$home" ] && [ -d "$home" ] || { echo "  $u -> sin home, saltando"; continue; }
@@ -49,19 +59,14 @@ for u in $USUARIOS; do
     if grep -qF "$MARCA" "$rc"; then
         echo "  $u -> ya configurado"
     else
-        cp -a "$rc" "${rc}.bak_${FECHA}"
-        printf '%s\n' "$BLOQUE" >> "$rc"
+        como "$u" cp -- "$rc" "${rc}.bak_${FECHA}"
+        printf '%s\n' "$BLOQUE" | como "$u" tee -a -- "$rc" >/dev/null
         echo "  $u -> configurado (backup .bak_${FECHA})"
     fi
 
     hist="$home/.bash_history"
-    if [ -L "$hist" ]; then
-        echo "       ! $hist es un enlace simbolico: NO se toca (posible intento de escalada)"
-    elif [ ! -e "$hist" ]; then
-        touch "$hist"
-        chown -h "$u:$(id -gn "$u" 2>/dev/null || echo "$u")" "$hist" 2>/dev/null
-        chmod 600 "$hist"
-        echo "       + creado .bash_history (no existia)"
+    if [ ! -e "$hist" ] && [ ! -L "$hist" ]; then
+        como "$u" sh -c 'umask 077; : >> "$1"' _ "$hist" && echo "       + creado .bash_history (no existia)"
     fi
 done
 
