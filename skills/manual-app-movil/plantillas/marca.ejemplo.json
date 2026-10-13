@@ -1,0 +1,16 @@
+{
+  "_comentario": "Marca DEL CLIENTE. Rutas de logo relativas a este fichero.",
+  "logo": "img/logo-blanco.png",
+  "alto_logo_mm": 7.5,
+  "alto_cabecera_mm": 26,
+  "alto_pie_mm": 16,
+  "sigla": "CE",
+  "colores": {"fondo": "#1F3A5F", "linea": "#2B8FD6", "texto_cabecera": "#C5DBF2", "texto_pie": "#CFD8EA"},
+  "pie": ["Calle Ejemplo, 1 · 00000 Ciudad",
+          "900 000 000 · info@ejemplo.com · ejemplo.com"],
+  "fuentes": {"Poppins-Bold": "~/.local/share/fonts/cliente/Poppins-Bold.ttf",
+              "WorkSans": "~/.local/share/fonts/cliente/WorkSans[wght].ttf"},
+  "fuente_normal": "WorkSans",
+  "fuente_negrita": "Poppins-Bold",
+  "fuente_html": "Work Sans"
+}

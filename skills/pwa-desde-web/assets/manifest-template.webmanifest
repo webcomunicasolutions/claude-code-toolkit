@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "NOMBRE COMPLETO - Cliente",
+  "short_name": "Nombre corto",
+  "description": "Descripcion breve de la app.",
+  "lang": "es-ES",
+  "dir": "ltr",
+  "start_url": "/paginas/index.php",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#RRGGBB",
+  "theme_color": "#RRGGBB",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Pantalla que mas usa el cliente",
+      "url": "/pagina_frecuente.php",
+      "icons": [{ "src": "/img/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

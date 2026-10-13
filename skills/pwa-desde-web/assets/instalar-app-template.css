@@ -1,0 +1,120 @@
+/* Aviso de instalacion de la PWA. Hoja aparte porque la cargan las DOS paginas de
+   entrada (login.php, que tiene su propio <style>, y paginas/index.php con estilos.css).
+   Colores de ejemplo (sustituir por los de la marca del cliente); se adapta al tema oscuro del dashboard. */
+
+.pwa-inst {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    z-index: 9000;
+    width: min(560px, calc(100vw - 28px));
+    transform: translate(-50%, 140%);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #dde3f0;
+    border-radius: 14px;
+    box-shadow: 0 12px 34px rgba(20, 32, 70, .22);
+    font-family: 'Manrope', 'Segoe UI', Roboto, Arial, sans-serif;
+    opacity: 0;
+    transition: transform .3s ease, opacity .3s ease;
+}
+
+.pwa-inst--visible {
+    transform: translate(-50%, 0);
+    opacity: 1;
+}
+
+.pwa-inst__ico {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    flex: 0 0 auto;
+}
+
+.pwa-inst__txt { flex: 1 1 auto; min-width: 0; }
+
+.pwa-inst__t {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1c2333;
+}
+
+.pwa-inst__d {
+    font-size: 13px;
+    line-height: 1.35;
+    color: #5a6480;
+    margin-top: 2px;
+}
+
+.pwa-inst__acc {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+.pwa-inst__ok {
+    background: #2f4f9c;
+    color: #fff;
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 18px;
+    font: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.pwa-inst__ok:hover { background: #26407f; }
+
+.pwa-inst__no {
+    background: transparent;
+    color: #68729a;
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 10px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.pwa-inst__no:hover { color: #1c2333; }
+
+.pwa-inst__ios {
+    font-size: 13px;
+    line-height: 1.35;
+    color: #2f4f9c;
+    max-width: 190px;
+}
+
+.pwa-inst__ios b { white-space: nowrap; }
+
+/* Movil estrecho: en columna, para que el boton no aplaste el texto */
+@media (max-width: 520px) {
+    .pwa-inst { flex-wrap: wrap; gap: 10px; }
+    .pwa-inst__txt { flex: 1 1 60%; }
+    .pwa-inst__acc { flex: 1 1 100%; justify-content: flex-end; }
+    .pwa-inst__ios { max-width: none; text-align: right; }
+}
+
+/* Tema oscuro del dashboard */
+[data-theme="dark"] .pwa-inst {
+    background: #17233f;
+    border-color: #2b3a5e;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, .45);
+}
+
+[data-theme="dark"] .pwa-inst__t { color: #eef2fb; }
+[data-theme="dark"] .pwa-inst__d { color: #9aa6c4; }
+[data-theme="dark"] .pwa-inst__no { color: #9aa6c4; }
+[data-theme="dark"] .pwa-inst__no:hover { color: #eef2fb; }
+[data-theme="dark"] .pwa-inst__ios { color: #b9c8ee; }
+
+/* Nunca en el mural de la tele, pase lo que pase con el JS */
+body.tv-mode .pwa-inst,
+html[data-tv="1"] .pwa-inst { display: none !important; }
+
+@media print { .pwa-inst { display: none !important; } }

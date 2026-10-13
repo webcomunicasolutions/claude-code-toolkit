@@ -1,0 +1,6 @@
+{
+  "_comentario": "Una entrada por captura del manual. src relativo a este fichero; cajas en px del ORIGEN (x1,y1,x2,y2) en el orden de los pasos; recorte opcional.",
+  "p1_confirmar": {"src": "frames/f_105.png", "cajas": [[183, 32, 247, 48], [182, 89, 443, 107]], "recorte": [0, 0, 800, 460]},
+  "p2_estado":    {"src": "frames/f_185.png", "cajas": [[493, 326, 541, 343], [441, 395, 646, 417]], "recorte": [180, 250, 1000, 600]},
+  "p8_fichero":   {"src": "frames/f_715.png", "cajas": [[440, 254, 780, 273], [497, 310, 1015, 328]], "recorte": [340, 190, 1330, 520]}
+}

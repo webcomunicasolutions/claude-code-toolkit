@@ -1,0 +1,18 @@
+# Inventario de servidores para auditoria (EJEMPLO). Copiar a servers.yaml y rellenar.
+# Permisos recomendados: chmod 600 servers.yaml
+# NO escribir contrasenas aqui: usar clave SSH o un puntero a tu gestor de credenciales.
+
+servers:
+  servidor-ejemplo:
+    host: 192.168.1.10
+    user: root
+    ssh_key: ~/.ssh/id_ed25519
+    password_ref: "<tu gestor de credenciales -> ruta del secreto>"
+    backup_dirs:
+      - /root/backups/
+      - /etc/easypanel/backups/
+    services:
+      - n8n
+      - PostgreSQL
+      - Redis
+    panel: EasyPanel

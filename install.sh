@@ -5,7 +5,7 @@
 # Installs agents, hooks, skills, commands, rules, statusline, and optionally
 # pulls additional components from Everything Claude Code (ECC).
 #
-# Run: bash install.sh [--all | --agents | --statusline | --scripts | --hook
+# Run: bash install.sh [--all | --agents | --statusline | --scripts | --hooks | --config
 #                       | --skills | --commands | --rules | --ecc | --ecc-only]
 # =============================================================================
 
@@ -53,6 +53,7 @@ install_scripts() {
     local count=0
     for f in "$SCRIPT_DIR"/scripts/*.sh; do
         [ ! -f "$f" ] && continue
+        case "$(basename "$f")" in _*) continue ;; esac   # _*.sh = herramientas internas del kit
         cp "$f" "$CLAUDE_DIR/scripts/"
         chmod +x "$CLAUDE_DIR/scripts/$(basename "$f")"
         count=$((count + 1))
@@ -61,13 +62,58 @@ install_scripts() {
 }
 
 install_hook() {
-    info "Installing Telegram approval hook..."
+    info "Installing hooks..."
     mkdir -p "$CLAUDE_DIR/hooks"
-    cp "$SCRIPT_DIR/hooks/telegram-approval/hook_permission_telegram.sh" "$CLAUDE_DIR/hooks/"
-    chmod +x "$CLAUDE_DIR/hooks/hook_permission_telegram.sh"
-    success "Hook installed to $CLAUDE_DIR/hooks/"
-    warn "Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables"
-    warn "Add hook to settings.json (see hooks/telegram-approval/README.md)"
+    local count=0
+    for f in "$SCRIPT_DIR"/hooks/*/*.sh; do
+        [ ! -f "$f" ] && continue
+        cp "$f" "$CLAUDE_DIR/hooks/"
+        chmod +x "$CLAUDE_DIR/hooks/$(basename "$f")"
+        count=$((count + 1))
+    done
+    success "$count hooks installed to $CLAUDE_DIR/hooks/"
+    info "aviso-contexto queda activo con --config. Los demas se activan a mano (ver hooks/*/README.md)."
+    warn "Telegram approval: set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID (see hooks/telegram-approval/README.md)"
+}
+
+# Configuracion base: settings.json (bypass + bloqueos de borrado + Opus + statusline + voz + aviso de contexto)
+# y plantilla de CLAUDE.md. NUNCA pisa lo que ya tienes: hace copia y fusiona.
+install_config() {
+    info "Installing base configuration..."
+    mkdir -p "$CLAUDE_DIR"
+    local base="$SCRIPT_DIR/config-base/settings.base.json"
+    local dest="$CLAUDE_DIR/settings.json"
+    if [ ! -f "$dest" ]; then
+        cp "$base" "$dest"
+        success "settings.json creado desde la plantilla"
+    elif ! command -v jq >/dev/null 2>&1; then
+        cp "$base" "$CLAUDE_DIR/settings.toolkit.json"
+        warn "jq no esta instalado: no puedo fusionar. Plantilla en $CLAUDE_DIR/settings.toolkit.json (fusionala a mano)"
+    else
+        local bak="$dest.bak-$(date +%Y%m%d-%H%M%S)"
+        cp "$dest" "$bak"
+        # Lo tuyo manda; de la plantilla se anaden las claves que te falten,
+        # los bloqueos (deny) se suman y el hook de contexto se anade si no estaba.
+        jq -s '
+          .[0] as $b | .[1] as $c
+          | ($b * $c)
+          | .permissions.deny = ((($b.permissions.deny // []) + ($c.permissions.deny // [])) | unique)
+          | .hooks.PostToolUse = (
+              ($c.hooks.PostToolUse // []) as $u
+              | if ($u | tostring | test("aviso-contexto")) then $u else $u + $b.hooks.PostToolUse end)
+        ' "$base" "$bak" > "$dest.tmp" && mv "$dest.tmp" "$dest"
+        success "settings.json fusionado (copia del anterior: $bak)"
+    fi
+    if [ ! -f "$CLAUDE_DIR/CLAUDE.md" ]; then
+        cp "$SCRIPT_DIR/config-base/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
+        success "CLAUDE.md creado: rellena la seccion 'Quien soy'"
+    else
+        cp "$SCRIPT_DIR/config-base/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md.toolkit"
+        info "Ya tenias CLAUDE.md: la plantilla queda en CLAUDE.md.toolkit para comparar"
+    fi
+    warn "Modo bypass ACTIVADO: Claude no pide permiso para cada accion. Los borrados (rm, git clean,"
+    warn "docker volume rm...) siguen bloqueados en permissions.deny. Para volver a modo con permisos:"
+    warn "  quita \"defaultMode\": \"bypassPermissions\" de ~/.claude/settings.json"
 }
 
 install_skills() {
@@ -78,8 +124,9 @@ install_skills() {
         local skill_name
         skill_name=$(basename "$skill_dir")
         if [ -f "$skill_dir/SKILL.md" ]; then
+            # Copia la skill COMPLETA (scripts, referencias, plantillas), no solo SKILL.md
             mkdir -p "$CLAUDE_DIR/skills/$skill_name"
-            cp "$skill_dir/SKILL.md" "$CLAUDE_DIR/skills/$skill_name/"
+            cp -r "$skill_dir"/. "$CLAUDE_DIR/skills/$skill_name/"
             count=$((count + 1))
         fi
     done
@@ -209,6 +256,7 @@ install_all() {
     install_statusline
     install_scripts
     install_hook
+    install_config
     echo ""
     info "Importing additional components from ECC..."
     install_ecc
@@ -216,13 +264,10 @@ install_all() {
     success "All components installed!"
     echo ""
     info "Next steps:"
-    echo "  1. Configure statusline in settings.json"
-    echo "  2. Configure Telegram hook in settings.json (optional)"
-    echo "  3. Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID (optional)"
-    echo "  4. Restart Claude Code"
-    echo ""
-    info "To enable agent teams, add to settings.json:"
-    echo '  "agentTeam": { "enabled": true }'
+    echo "  1. Rellena la seccion 'Quien soy' de ~/.claude/CLAUDE.md"
+    echo "  2. Dependencias de las skills (Whisper, OCR, Office...): bash install-deps.sh"
+    echo "  3. Notas de voz /audio y hook de Telegram (opcional): TELEGRAM_BOT_TOKEN y TELEGRAM_CHAT_ID"
+    echo "  4. Reinicia Claude Code"
     echo ""
 }
 
@@ -260,7 +305,8 @@ for arg in "$@"; do
     case "$arg" in
         --agents)     install_agents ;;
         --statusline) install_statusline ;;
-        --hook)       install_hook ;;
+        --hook|--hooks) install_hook ;;
+        --config)     install_config ;;
         --skills)     install_skills ;;
         --commands)   install_commands ;;
         --rules)      install_rules ;;
@@ -280,7 +326,8 @@ for arg in "$@"; do
             echo "  --rules       Install coding rules only"
             echo "  --statusline  Install statusline only"
             echo "  --scripts     Install helper scripts only"
-            echo "  --hook        Install Telegram hook only"
+            echo "  --hooks       Install hooks only"
+            echo "  --config      Base settings.json (bypass + bloqueos + Opus + statusline) y CLAUDE.md"
             echo "  --ecc         Import new components from Everything Claude Code"
             echo "  --ecc-only    Only import from ECC (skip toolkit install)"
             echo "  --summary     Show installed component counts"

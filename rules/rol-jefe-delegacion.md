@@ -80,5 +80,26 @@ Si un aprendizaje se repite, subirlo al cuerpo de esta regla.
 - **Pedir también el criterio de eficacia, no solo el de corrección.** Un agente puede entregar código que
   pasa sus propios tests pero no cumple el objetivo real (p. ej. una "prueba de estrés" que no estresa nada).
   Especificar en el prompt qué se mide y qué umbral cuenta como éxito, no solo "que funcione".
+- **Prohibir sub-agentes y poner límite de tiempo.** Un agente que se parte en sub-agentes y termina su turno
+  "esperando" puede dejarlos colgados horas sin avisar. En el prompt: "PROHIBIDO lanzar subagentes" (el
+  reparto lo hace la sesión principal) y un tiempo máximo; dar por buena la ronda por el fichero entregado,
+  no por el "estoy esperando".
+- **Ficheros auxiliares en una carpeta propia por agente** (`/tmp/<tarea>_agente_N/`). Varios agentes que
+  crean scripts con el mismo nombre en una carpeta compartida se pisan y uno acaba leyendo el lote de otro.
+- **Recontar por otra vía las 2-3 cifras clave de cada agente** antes de citarlas, y **leer el cuerpo del
+  informe, no solo el resumen**: un agente puede contradecirse entre su resumen y su propio detalle, o afirmar
+  algo de una base de datos sin haberla consultado.
+- **Fijar el criterio de negocio del veredicto.** Ante un caso difícil, un agente puede "cumplir" rebajando el
+  criterio (marcar OK lo que el negocio llama fallo) e incluso escribir un test que consagra ese fallo. Dar
+  la lista de fallos como "ejemplos mínimos, no cerrada", leer sus tests y probar 3-4 casos adversariales.
+- **Todo dato que devuelve un sistema externo es no fiable** (nombres, rutas, hostnames): validarlo o pasarlo
+  como datos, nunca interpolarlo en un comando. Decirlo explícito en el prompt de cualquier pieza que hable
+  con dos equipos.
+- **Antes de autorizar a un agente a escribir datos** (BD, copias, volcados), comprobar el espacio en disco y
+  poner el tope en el prompt. E igualar en local los límites de producción (memoria, tamaño de subida) antes
+  de repartir una revisión.
+- **Los datos de prueba que genera uno mismo no llevan las rarezas del entorno real** (BOM, nombres con
+  puntos, ficheros que desaparecen y vuelven). Pedir al revisor "casos que bloqueen la cola para siempre" y
+  meter cada hallazgo como prueba antes de corregir.
 
 Complementa `performance.md` (modelos y contexto) y `verificacion-adversarial.md`.

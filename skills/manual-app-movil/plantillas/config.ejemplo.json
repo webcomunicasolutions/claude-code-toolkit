@@ -1,0 +1,21 @@
+{
+  "_comentario": "Config del manual. NUNCA contraseñas aquí: solo la ruta al fichero de tu gestor de credenciales (JSON fuera del repo).",
+  "proyecto": "cliente-ejemplo",
+  "url": "https://app.ejemplo.com",
+  "logout": "/logout.php",
+  "login": {"campo_usuario": "input[name=usuario]", "campo_password": "input[name=contrasena]", "boton": "button[type=submit]"},
+  "vault": {"fichero": "~/.credentials/cliente-ejemplo.json",
+            "ruta_usuarios": "servicios.web_gestion_usuarios.usuarios",
+            "campo_password": "password"},
+  "usuario_para_capturas": "montador1",
+  "trabajadores": ["montador1", "montador2", "taller", "jefe1"],
+  "roles": {"montador": "Montador", "tecnico_fabrica": "Técnico de fábrica",
+            "jefe_taller": "Jefe de taller", "jefe_montadores": "Jefe de montadores"},
+  "capturas": [
+    {"nombre": "inicio", "ruta": "/dashboard.php"},
+    {"nombre": "menu", "ruta": "/dashboard.php", "clics_seguros": [".menu-toggle"]},
+    {"nombre": "control_horario", "ruta": "/fichajes.php"},
+    {"nombre": "parte_dia", "ruta": "/parte_dia.php"},
+    {"nombre": "aviso", "ruta": "/aviso.php?id=1", "pagina_completa": true}
+  ]
+}

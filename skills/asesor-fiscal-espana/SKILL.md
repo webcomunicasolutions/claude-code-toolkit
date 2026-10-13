@@ -36,14 +36,14 @@ Solo para comerciantes minoristas en régimen de estimación directa.
 ## Formatos de Identificación Fiscal
 
 ### España
-- **CIF empresa**: Letra + 8 dígitos (ej: B93445385)
-- **NIF persona**: 8 dígitos + letra (ej: B12345678)
+- **CIF empresa**: Letra + 8 dígitos (ej: B12345678)
+- **NIF persona**: 8 dígitos + letra (ej: 12345678Z)
 - **NIE extranjero**: X/Y/Z + 7 dígitos + letra (ej: X1234567T)
 
 ### Regla ES
 Si el CIF/NIF tiene prefijo "ES", eliminarlo:
-- ESB93445385 → B93445385
 - ESB12345678 → B12345678
+- ES12345678Z → 12345678Z
 
 ### Otros países UE (conservar prefijo)
 - LU20260743 (Luxemburgo)
@@ -197,7 +197,7 @@ AT, BE, CY, DE, EE, ES, FI, FR, GR, HR, IE, IT, LT, LU, LV, MT, NL, PT, SI, SK
 ```json
 {
   "nombre_empresa": "DISTRIBUCIONES MYLAR S.A.U.",
-  "cif": "B93445385",
+  "cif": "B12345678",
   "codigo_postal": "18210",
   "fecha_expedicion": "19/12/2025",
   "numero_factura": "M/8.805",

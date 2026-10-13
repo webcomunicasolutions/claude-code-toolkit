@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Manual de ejemplo</title>
+<style>
+@page { size: A4; margin: 36mm 14mm 24mm 14mm; }
+* { box-sizing: border-box; }
+body { font-family: "Work Sans", "DejaVu Sans", Arial, sans-serif; color:#333; margin:0; font-size:10.3pt; line-height:1.5; }
+h1 { font-family:"Poppins","DejaVu Sans",sans-serif; font-weight:700; color:#1F3A5F; font-size:21pt; margin:0 0 1mm; line-height:1.2; }
+h2 { font-family:"Poppins","DejaVu Sans",sans-serif; font-weight:600; color:#1F3A5F; font-size:13.5pt; margin:8mm 0 3mm; border-bottom:2px solid #2B8FD6; padding-bottom:1.5mm; break-after:avoid; }
+h2.first { margin-top:1mm; }
+p { margin:0 0 2.5mm; }
+ol { margin:0 0 3mm; padding-left:6mm; } li { margin-bottom:1.2mm; }
+.sub { color:#666; font-size:10pt; margin:0 0 5mm; }
+.lead { background:#EEF5FC; border-left:4px solid #2B8FD6; padding:3.5mm 5mm; margin:0 0 5mm; }
+.ruta { display:inline-block; background:#1F3A5F; color:#fff; font-weight:bold; padding:.6mm 2.5mm; border-radius:2mm; font-family:"DejaVu Sans Mono",monospace; font-size:9.5pt; }
+.aviso { background:#FFF8E5; border-left:4px solid #E8A33D; padding:3mm 5mm; margin:3mm 0; break-inside:avoid; }
+.peligro { background:#FDECEA; border-left:4px solid #C62828; padding:3mm 5mm; margin:3mm 0; break-inside:avoid; }
+table { width:100%; border-collapse:collapse; margin:2mm 0 4mm; break-inside:avoid; }
+th { background:#1F3A5F; color:#fff; text-align:left; padding:2.2mm 3mm; font-size:9.5pt; }
+td { border-bottom:1px solid #DDE3EA; padding:2.2mm 3mm; vertical-align:top; font-size:9.8pt; }
+.captura { border:1px solid #CFD5DE; border-radius:2mm; overflow:hidden; box-shadow:0 .6mm 1.5mm rgba(0,0,0,.12); margin:2mm auto 1mm; break-inside:avoid; }
+.captura img { width:100%; display:block; }
+.c-ancha { width:100%; } .c-media { width:72%; } .c-estrecha { width:55%; }
+.pie-img { font-size:8pt; color:#777; text-align:center; margin:0 0 4mm; }
+.bloque { break-inside:avoid; }
+.rojo { color:#C62828; font-weight:bold; }
+.tecla { display:inline-block; border:1px solid #9AA4B5; border-bottom-width:2px; border-radius:1.2mm; padding:0 1.5mm; font-size:8.8pt; background:#F6F8FB; }
+.rompe { break-before:page; }
+.contacto { font-size:8.5pt; color:#777; border-top:1px solid #DDE3EA; padding-top:2.5mm; margin-top:5mm; }
+</style>
+
+<h1>Cómo generar el informe mensual</h1>
+<p class="sub">Para el equipo de administración · Cliente Ejemplo S.L. · Mes 2026</p>
+
+<div class="lead"><p style="margin:0"><strong>En una línea:</strong> abrir el pedido → marcar <strong>Preparado</strong>
+→ crear un <strong>lote</strong> → meter el pedido en el lote → clic derecho <strong>Calcular</strong> → copiar el fichero al
+<strong>pendrive</strong>.</p></div>
+
+<p>Este manual sale de la sesión grabada por el proveedor el día X. Las imágenes son de ese vídeo.
+Los <span class="rojo">recuadros rojos numerados</span> marcan dónde hay que pinchar, en el mismo orden que los pasos.</p>
+
+<h2>Paso 1 · Abrir el pedido</h2>
+<ol>
+  <li>Abre el presupuesto en <strong>Ventas</strong>.</li>
+  <li>Menú <strong>Operaciones → Generar pedido…</strong></li>
+</ol>
+<div class="bloque"><div class="captura c-media"><img src="img/p1_pedido.jpg"></div>
+<p class="pie-img">El menú Operaciones (1) y Generar pedido (2).</p></div>
+
+<div class="bloque">
+<h2>Paso 2 · Marcar el pedido como «listo»</h2>
+<ol>
+  <li>Pulsa la pestaña <strong>Estado</strong> (1).</li>
+  <li>Marca la casilla <strong>Preparado</strong> (2) y guarda con <span class="tecla">Ctrl</span>+<span class="tecla">S</span>.</li>
+</ol>
+<div class="bloque"><div class="captura c-estrecha"><img src="img/p2_estado.jpg"></div>
+<p class="pie-img">Pestaña Estado (1) y casilla Preparado (2).</p></div>
+<div class="peligro"><strong>Importante:</strong> si no marcas «Preparado», el pedido <strong>no aparece</strong> en el
+paso siguiente. Es lo primero que hay que mirar si un pedido «no sale».</div>
+</div>
+
+<h2>Paso 3 · Generar el fichero</h2>
+<p>El fichero se crea en la carpeta <span class="ruta">C:\Salida\Maquina</span> del servidor remoto, con el número de lote
+y la extensión <span class="ruta">.xml</span>.</p>
+<div class="aviso"><strong>Aviso:</strong> el programa no avisa si dos lotes se pisan; revísalo a mano.</div>
+
+<h2>Pendiente con el proveedor</h2>
+<table>
+<tr><th style="width:30%">Tema</th><th>Situación</th></tr>
+<tr><td><strong>Driver de la máquina nueva</strong></td><td>Aún no validado. Cuando lo esté, saldrá un segundo fichero.</td></tr>
+<tr><td><strong>Envío directo a la máquina</strong></td><td>Pendiente de consultar con el equipo de informática.</td></tr>
+</table>
+
+<p class="contacto">Dudas: contacto del proveedor · soporte@ejemplo.com · 900 000 000.<br>
+Elaborado a partir de la grabación del proveedor. Si algo no coincide con lo que ves en pantalla, avísanos y lo corregimos.</p>
+
+</body></html>

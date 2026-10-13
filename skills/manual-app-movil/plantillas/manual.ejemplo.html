@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Manual</title>
+<style>
+/* Márgenes: dejan hueco a la banda (arriba) y al pie de marca.py */
+@page { size: A4; margin: 36mm 14mm 24mm 14mm; }
+* { box-sizing:border-box }
+body { font-family:"<FUENTE>", Arial, sans-serif; color:#333; margin:0; font-size:10.3pt; line-height:1.5 }
+h1 { font-family:"<DISPLAY>",sans-serif; color:<MARCA>; font-size:21pt; margin:0 0 1mm }
+h2 { font-family:"<DISPLAY>",sans-serif; color:<MARCA>; font-size:13.5pt; margin:8mm 0 3mm;
+     border-bottom:2px solid <ACENTO>; padding-bottom:1.5mm; break-after:avoid }
+h3 { font-family:"<DISPLAY>",sans-serif; color:<MARCA>; font-size:11pt; margin:4mm 0 1.5mm; break-after:avoid }
+table { width:100%; border-collapse:collapse; margin:2mm 0 4mm; break-inside:avoid }
+th { background:<MARCA>; color:#fff; text-align:left; padding:2.2mm 3mm; font-size:9.5pt }
+td { border-bottom:1px solid #DDE3EA; padding:2.2mm 3mm; vertical-align:top; font-size:9.8pt }
+/* texto a la izquierda, móvil a la derecha */
+.fila { display:flex; gap:7mm; align-items:flex-start; break-inside:avoid; margin-bottom:4mm }
+.fila .txt { flex:1 }
+.tel { width:50mm; flex:none; border:1.3mm solid #2A2E39; border-radius:4.5mm; overflow:hidden }
+.tel img { width:100%; display:block }
+.recorte { width:62mm; flex:none; border:1px solid #CFD5DE; border-radius:2mm; overflow:hidden }
+.recorte img { width:100%; display:block }
+.aviso { background:#FFF8E5; border-left:4px solid #E8A33D; padding:3mm 5mm; margin:3mm 0; break-inside:avoid }
+.ok { background:#F0F8F1; border-left:4px solid #4C9A5A; padding:3mm 5mm; margin:3mm 0; break-inside:avoid }
+.num { display:inline-block; background:<ACENTO>; color:#fff; font-weight:bold; width:6.5mm; height:6.5mm;
+       border-radius:50%; text-align:center; line-height:6.5mm; margin-right:1.5mm; font-size:9.5pt }
+.rompe { break-before:page }
+</style></head><body>
+<h1>&lt;App&gt; en tu móvil</h1>
+<h2>Paso 1 · Entra en la web</h2>
+<div class="fila">
+  <div class="txt"><ol><li>Abre <strong>Chrome</strong> o <strong>Safari</strong>.</li></ol></div>
+  <div class="tel"><img src="img/login.png" alt="Pantalla de entrada"></div>
+</div>
+</body></html>

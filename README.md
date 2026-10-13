@@ -7,10 +7,11 @@ A comprehensive collection of agents, skills, commands, rules, hooks, and utilit
 | Component | Count | Description |
 |-----------|-------|-------------|
 | [**Agents**](agents/) | 32 | Specialized agents for code review, TDD, security, architecture, and more |
-| [**Skills**](skills/) | 68 | Domain knowledge packs with scripts, references, and templates |
-| [**Commands**](commands/) | 20 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
-| [**Rules**](rules/) | 33 | Coding standards for 12+ languages and cross-cutting concerns |
-| [**Hooks**](hooks/) | 1 | Telegram approval hook for remote action control |
+| [**Skills**](skills/) | 82 | Domain knowledge packs with scripts, references, and templates |
+| [**Commands**](commands/) | 23 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
+| [**Rules**](rules/) | 34 | Coding standards for 12+ languages and cross-cutting concerns |
+| [**Hooks**](hooks/) | 3 | Context-usage warning, audit reminder and Telegram approval |
+| [**Base config**](config-base/) | 2 | `settings.json` (bypass + delete blocks + Opus + statusline + voice) and a `CLAUDE.md` template |
 | [**Scripts**](scripts/) | 2 | Memory-size check and Telegram voice notes |
 | [**Statusline**](statusline/) | 1 | Rich status bar with context usage, tokens, costs, and git info |
 
@@ -26,14 +27,32 @@ Install individual components:
 
 ```bash
 bash install.sh --agents      # 32 agents
-bash install.sh --skills      # 68 skills
-bash install.sh --commands    # 20 commands
-bash install.sh --rules       # 33 rules
+bash install.sh --skills      # 82 skills
+bash install.sh --commands    # 23 commands
+bash install.sh --rules       # 34 rules
 bash install.sh --statusline  # Status bar
 bash install.sh --scripts     # Helper scripts (memory size, voice notes)
-bash install.sh --hook        # Telegram approval hook
+bash install.sh --hooks       # Hooks (context warning, audit reminder, Telegram approval)
+bash install.sh --config      # Base settings.json + CLAUDE.md template (merges, never overwrites)
 bash install.sh --ecc         # Import extras from Everything Claude Code
 ```
+
+## What's new (October 2026)
+
+- **Base configuration (`--config`)**: a ready-to-work `settings.json` — Opus as main model, **bypass mode with
+  destructive commands blocked** (`rm`, `git clean`, `git push --force`, `docker volume rm`…), statusline, voice
+  dictation and the context-usage warning hook — plus a `CLAUDE.md` template that loads the working rules.
+  If you already have a `settings.json`, it is **merged** (your values win, a backup is kept).
+- **Installer fix**: skills are now copied **complete** (scripts, references, templates). Before, only `SKILL.md`
+  was copied, so skills like `docx`, `xlsx`, `pdf` or `gmail-api` arrived without their tools.
+- **New skills**: `gmail-api` (your own Gmail via OAuth, step-by-step setup), `llmwhisperer` and `glm-ocr` (OCR),
+  `ollama-specialist`, `manual-desde-video`, `manual-app-movil`, `pwa-desde-web`, `apk-webview-android`,
+  `seguridad-web`, `linux-server-audit`, `server-security-watch`, `windows-server-rds`, `n8n-workflow`, `notify`.
+- **New rule** `checklist-de-tareas` and new delegation lessons in `rol-jefe-delegacion` (Sonnet/Haiku for agents).
+- **New commands**: `/n8n`, `/ficha-cliente`, `/conectar-servidor` (template). **New hooks**: `aviso-contexto`, `audit-reminder`.
+- **`/audio` fixed**: Microsoft changed the free TTS endpoint in October 2026 (403 in Europe); the script now tries
+  the new host first. Default voice: `es-ES-XimenaNeural`.
+- More n8n skills: see [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) (not bundled: no license file).
 
 ## What's new (September 2026)
 
