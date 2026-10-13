@@ -25,6 +25,9 @@ Ante la duda, copiar los scripts de `scripts/` y adaptar, no reescribir de memor
 
 ### 1. Coordenadas y permiso
 - URL real (la definitiva, no la provisional), usuarios y la ruta de sus credenciales en tu gestor (un JSON fuera del repo; ver `plantillas/config.ejemplo.json`).
+  Selectores del login por defecto: `input[name=usuario]`, `input[name=contrasena]` y `button[type=submit]`; si la web usa otros,
+  añadir al config un objeto `login` con las claves `campo_usuario`, `campo_password` y `boton`. En `vault`, `ruta_usuarios` es la ruta
+  (separada por puntos) hasta el objeto de usuarios y `campo_password` (por defecto `password`) el campo de cada uno.
 - **Tocar producción de cliente exige confirmación explícita.** Entrar a MIRAR es aceptable;
   pulsar cualquier botón que guarde, NO (un fichaje no se borra desde la web).
 
