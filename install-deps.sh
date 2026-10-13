@@ -29,7 +29,7 @@ install_system() {
     local CORE="jq curl bc git"
 
     # Document processing
-    local DOCS="pandoc poppler-utils libreoffice qpdf"
+    local DOCS="pandoc poppler-utils libreoffice qpdf libpango-1.0-0 libpangoft2-1.0-0 tesseract-ocr tesseract-ocr-spa"
 
     # Media processing
     local MEDIA="ffmpeg"
@@ -83,10 +83,13 @@ install_python() {
     # YouTube
     local YOUTUBE="youtube-transcript-api"
 
+    # Voz (/audio: notas de voz por Telegram) y HTML -> PDF (recibos, manuales)
+    local VOZ="edge-tts weasyprint"
+
     # PPTX extraction
     local PPTX='markitdown[pptx]'
 
-    local ALL_PIP="$PDF $DOCS $WEB $MEDIA $YOUTUBE"
+    local ALL_PIP="$PDF $DOCS $WEB $MEDIA $YOUTUBE $VOZ"
 
     echo "  Packages: $ALL_PIP $PPTX"
     echo ""
@@ -178,7 +181,7 @@ check_deps() {
 
     echo ""
     echo -e "${BLUE}Python packages:${NC}"
-    for pkg in pypdf pdfplumber reportlab pytesseract pdf2image openpyxl pandas defusedxml bs4 lxml nodriver PIL imageio numpy youtube_transcript_api markitdown requests; do
+    for pkg in pypdf pdfplumber reportlab pytesseract pdf2image openpyxl pandas defusedxml bs4 lxml nodriver PIL imageio numpy youtube_transcript_api markitdown requests edge_tts weasyprint; do
         if python3 -c "import $pkg" 2>/dev/null; then
             echo -e "  ${GREEN}✓${NC} $pkg"
         else
