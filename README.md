@@ -9,7 +9,7 @@ A comprehensive collection of agents, skills, commands, rules, hooks, and utilit
 | [**Agents**](agents/) | 32 | Specialized agents for code review, TDD, security, architecture, and more |
 | [**Skills**](skills/) | 82 | Domain knowledge packs with scripts, references, and templates |
 | [**Commands**](commands/) | 23 | Slash commands for common workflows (`/tdd`, `/plan`, `/build-fix`...) |
-| [**Rules**](rules/) | 34 | Coding standards for 12+ languages and cross-cutting concerns |
+| [**Rules**](rules/) | 27 | Working rules + coding standards for PHP, Python, TypeScript and MySQL (loaded only on matching files) |
 | [**Hooks**](hooks/) | 3 | Context-usage warning, audit reminder and Telegram approval |
 | [**Base config**](config-base/) | 2 | `settings.json` (Opus, delete blocks, optional bypass, statusline, voice) and a `CLAUDE.md` template |
 | [**Scripts**](scripts/) | 2 | Memory-size check and Telegram voice notes |
@@ -45,7 +45,7 @@ Install individual components:
 bash install.sh --agents      # 32 agents
 bash install.sh --skills      # 82 skills
 bash install.sh --commands    # 23 commands
-bash install.sh --rules       # 34 rules
+bash install.sh --rules       # 27 rules (+ rules-ondemand/)
 bash install.sh --statusline  # Status bar
 bash install.sh --scripts     # Helper scripts (memory size, voice notes)
 bash install.sh --hooks       # Hooks (context warning, audit reminder, Telegram approval)
@@ -55,6 +55,16 @@ bash install.sh --ecc         # Import extras from Everything Claude Code
 
 ## What's new (October 2026)
 
+- **Leaner instructions (17/10)**: the harness has a ~150 K cap on the instruction files loaded in every session.
+  - Language rules now carry `paths:` frontmatter (PHP, Python, TypeScript): they load **only** when you touch those files.
+  - The rarely used language rules (C++, C#, Go, Java, Kotlin, Perl, Rust, Swift) were **removed** from `rules/`.
+    The language agents (`*-reviewer`, `*-build-resolver`) are still included.
+  - `rol-jefe-delegacion` keeps a short distilled list; the full case log moved to **`rules-ondemand/`** (installed,
+    but not loaded every session).
+  - `memoria-tamano` + `scripts/check_memory_size.sh` now also measure global instructions (CLAUDE.md + `rules/`)
+    and every project `CLAUDE.md` (`PROYECTOS_DIR`, default `~/proyectos`).
+- **New rule** `hablar-con-otras-sesiones`: talk to another open Claude Code session (`ListAgents` + `SendMessage`).
+- `/audio`: `hombre` / `elvira` voice options.
 - **Base configuration (`--config`)**: a ready-to-work `settings.json` — Opus as main model, direct destructive
   commands blocked (`rm`, `git clean`, `git push --force`, `docker volume rm`…; not a complete barrier), optional
   **bypass mode (asked at install, or `TOOLKIT_BYPASS=1`)**, statusline, voice dictation and the context-usage warning hook — plus a `CLAUDE.md` template that loads the working rules.
@@ -265,7 +275,7 @@ This shows the total count of agents, skills, commands, and rules installed.
 | `xlsx` | Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis, and visualization. When Clau… |
 | `youtube-transcript` | Extract and analyze transcripts from YouTube videos. Use when users request YouTube video transcriptions, summaries, or analysis. Handles vi… |
 
-### Rules (33)
+### Rules (27)
 
 Cross-cutting working rules (most in Spanish): critical attitude, declared coverage ("how many of how many did I check"),
 adversarial verification, credentials vault, secrets in web deployments, backups, versioning, agent delegation…
@@ -277,31 +287,25 @@ plus coding standards per language.
 | `anti-hallucination` | Aplicar estas reglas SIEMPRE que se extraigan datos de documentos, PDFs, facturas, contratos, emails, transcripciones o cualquier fuente. |
 | `auto-mejora-skills` | Toda skill procedimental (que guia un workflow o proceso multi-paso) DEBE |
 | `backups-restic-b2` | Regla nacida de una decisión explícita: en todos los servidores, Windows y Linux, donde se ponga restic y |
+| `checklist-de-tareas` | Ante 3+ tareas o un encargo con pasos: lista con criterio de «hecho», marcada como hecha solo con evidencia. |
 | `cobertura-declarada` | Regla nacida de un fallo real. Llegaron **195 ficheros Excel** de un proveedor para cruzar contra un |
 | `coding-style` | - SIEMPRE crear objetos nuevos, NUNCA mutar existentes |
 | `coordenadas-canonicas` | Regla nacida de un fallo real: se perdió una sesión entera sondeando una URL equivocada de una API y |
-| `cpp` | - C++17 mínimo (preferir C++20/23) |
 | `credentials-handling` | Cuando el usuario proporcione credenciales (passwords, tokens, API keys, |
-| `csharp` | - .NET conventions obligatorias |
 | `databases-docker` | Cuando se trabaje con bases de datos (PostgreSQL, MySQL, MongoDB, Redis con |
 | `entregables-a-disco` | **Cualquier cosa que se produzca en una conversación —un presupuesto, un texto para un cliente, |
 | `git-workflow` | - Formato: `<tipo>: <descripcion>` |
-| `go` | - gofmt y goimports obligatorios |
-| `java` | - google-java-format obligatorio |
-| `kotlin` | - ktlint/Detekt obligatorio |
+| `hablar-con-otras-sesiones` | Dos sesiones de Claude Code abiertas en el mismo equipo pueden hablar: `ListAgents` + `SendMessage`, y sus trampas. |
 | `memoria-tamano` | Detectado en la práctica: el `MEMORY.md` de un proyecto llego a **25.936 bytes** |
 | `mysql` | - Prepared statements SIEMPRE (PDO/mysqli), nunca concatenar input |
 | `patterns` | Crear capa uniforme de acceso a datos: |
 | `performance` | Precios orientativos por 1M tokens (input/output) — **compruébalos siempre**, cambian con frecuencia: |
-| `perl` | - use v5.36 obligatorio (strict + warnings automáticos) |
 | `php` | - PSR-12 obligatorio |
 | `ports-safety` | NUNCA lanzar un servidor o servicio en un puerto sin verificar que esta libre. |
 | `python` | - PEP 8 obligatorio |
 | `rol-jefe-delegacion` | Decisión de trabajo aplicada en todos los proyectos: según sea la tarea, se ejecuta directamente o se |
-| `rust` | - rustfmt obligatorio |
 | `secretos-en-despliegues-web` | Regla nacida de un incidente real: en un proyecto desplegado, el fichero `.env` estaba en la carpeta |
 | `security` | - [ ] Sin secrets hardcodeados (API keys, passwords, tokens) |
-| `swift` | - SwiftFormat + SwiftLint obligatorio |
 | `testing` | - Branches, funciones, lineas, statements |
 | `typescript` | - Tipos explícitos para APIs públicas, inferidos para variables locales |
 | `verificacion-adversarial` | Regla nacida de una preocupación real: los LLM tienden a la |

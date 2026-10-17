@@ -1,3 +1,9 @@
+---
+paths:
+  - "**/*.php"
+  - "**/composer.json"
+---
+
 # PHP
 
 ## Estilo

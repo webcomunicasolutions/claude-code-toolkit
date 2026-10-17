@@ -50,56 +50,25 @@ Al cerrar cada ronda de agentes, apuntar lo que se pueda generalizar:
 - ¿Coste frente a resultado? (modelo, número de agentes, trabajo repetido)
 Si un aprendizaje se repite, subirlo al cuerpo de esta regla.
 
-## Aprendizajes (generalizados de casos reales)
+## Aprendizajes destilados (lo que se repite; el registro completo, caso por caso, en `~/.claude/rules-ondemand/rol-jefe-aprendizajes.md`)
 
-- **Confirmar la regla de modelo vigente antes de lanzar agentes.** Una memoria antigua de proyecto puede
-  llevar a elegir un modelo más caro de lo necesario por costumbre.
-- **Repartir en agentes también sirve de revisión cruzada.** Un agente investigando una pieza relacionada
-  puede detectar que un cambio recién aplicado en producción por la sesión principal era erróneo (por
-  ejemplo, un dato que ya estaba corregido por otro documento). Antes de aplicar un cambio en prod, esperar a
-  agentes que investigan piezas relacionadas, o lanzar uno que busque explícitamente "qué documento podría
-  contradecir esto".
-- **En lotes clasificados por categoría, dar reglas de decisión con 1-2 ejemplos resueltos por categoría**, no
-  solo los nombres de las categorías, y **cruzar los lotes con una tabla común** (categoría × señales
-  objetivas) antes de creer ningún total: agentes distintos con el mismo encargo pueden clasificar el mismo
-  patrón de forma distinta y desviar una cifra final de forma significativa.
-- **Prohibir que varios sub-agentes escriban el mismo fichero final.** Uno por sub-tarea + una consolidación
-  final única, con una lista cerrada de valores para las columnas de categoría; si no, aparecen varios
-  resúmenes con cifras distintas del mismo encargo. Pasar también a los agentes que se lancen después las
-  decisiones ya tomadas por el usuario, para que no las contradigan.
-- **Antes de dictar una regla de datos a los agentes** (p. ej. "no conviertas moneda"), comprobar cómo guarda
-  el dato la aplicación destino: una regla mal puesta puede hacer que distintos lotes traten el mismo caso de
-  forma distinta.
-- **Cuando dos agentes tocan el mismo documento y se contradicen**, cruzar sus afirmaciones contra la fuente
-  antes de creer ninguna. Pedir "explica la diferencia" en vez de "puntea" suele sacar hallazgos que ninguno
-  de los dos había puesto en el resumen.
-- **El sustrato de datos que leen los agentes se congela mientras trabajan.** Si hace falta tocarlo durante su
-  ejecución, avisarles antes de qué cambia y qué deben excluir, o darles una copia aparte; decirles también
-  qué columnas NO son claves estables entre regeneraciones. Un agente que para para avisar de que los datos
-  se han movido vale más que uno que entrega puntual sobre una foto muerta.
-- **Pedir también el criterio de eficacia, no solo el de corrección.** Un agente puede entregar código que
-  pasa sus propios tests pero no cumple el objetivo real (p. ej. una "prueba de estrés" que no estresa nada).
-  Especificar en el prompt qué se mide y qué umbral cuenta como éxito, no solo "que funcione".
-- **Prohibir sub-agentes y poner límite de tiempo.** Un agente que se parte en sub-agentes y termina su turno
-  "esperando" puede dejarlos colgados horas sin avisar. En el prompt: "PROHIBIDO lanzar subagentes" (el
-  reparto lo hace la sesión principal) y un tiempo máximo; dar por buena la ronda por el fichero entregado,
-  no por el "estoy esperando".
-- **Ficheros auxiliares en una carpeta propia por agente** (`/tmp/<tarea>_agente_N/`). Varios agentes que
-  crean scripts con el mismo nombre en una carpeta compartida se pisan y uno acaba leyendo el lote de otro.
-- **Recontar por otra vía las 2-3 cifras clave de cada agente** antes de citarlas, y **leer el cuerpo del
-  informe, no solo el resumen**: un agente puede contradecirse entre su resumen y su propio detalle, o afirmar
-  algo de una base de datos sin haberla consultado.
-- **Fijar el criterio de negocio del veredicto.** Ante un caso difícil, un agente puede "cumplir" rebajando el
-  criterio (marcar OK lo que el negocio llama fallo) e incluso escribir un test que consagra ese fallo. Dar
-  la lista de fallos como "ejemplos mínimos, no cerrada", leer sus tests y probar 3-4 casos adversariales.
-- **Todo dato que devuelve un sistema externo es no fiable** (nombres, rutas, hostnames): validarlo o pasarlo
-  como datos, nunca interpolarlo en un comando. Decirlo explícito en el prompt de cualquier pieza que hable
-  con dos equipos.
-- **Antes de autorizar a un agente a escribir datos** (BD, copias, volcados), comprobar el espacio en disco y
-  poner el tope en el prompt. E igualar en local los límites de producción (memoria, tamaño de subida) antes
-  de repartir una revisión.
-- **Los datos de prueba que genera uno mismo no llevan las rarezas del entorno real** (BOM, nombres con
-  puntos, ficheros que desaparecen y vuelven). Pedir al revisor "casos que bloqueen la cola para siempre" y
-  meter cada hallazgo como prueba antes de corregir.
+Al cerrar cada ronda de agentes, **añadir el caso nuevo al fichero de registro** (no aquí: esta regla se carga en todas
+las sesiones y un diario dentro de ella acaba pasando el tope de instrucciones); si una lección se repite, subirla a esta lista.
+
+- **Recontar por otra vía 2-4 cifras clave de cada agente** antes de citarlas: es habitual que una ronda traiga 1-3 afirmaciones falsas dichas con seguridad. Leer el cuerpo del informe, no solo el resumen, y también las «DUDA», no solo los «ERROR».
+- **Mirar la semántica del dato en la fuente ANTES de dictar una regla** a los agentes (qué guarda la app, qué devuelve la herramienta, qué pone el motor por defecto: fechas 1900, 0, ''). Una regla mal puesta sesga lotes enteros.
+- **Mismo conjunto en lotes = reglas de decisión con ejemplos resueltos + lista cerrada de valores** y, al volver, cruzar los lotes con una tabla común antes de creer ningún total.
+- **Prompt siempre con**: PROHIBIDO lanzar subagentes · límite de tiempo · ficheros auxiliares en carpeta propia por agente · un solo escritor por fichero · «entrega en el mensaje final y en fichero, ≤ 60-70 líneas» · «avisa de lo que veas fuera del encargo» (rinde mucho) · decisiones vigentes del usuario · lo ya probado («no lo repitas»).
+- **El sustrato que leen los agentes se congela**: no editar la herramienta común, la BD ni el repo mientras trabajan; nada de `git stash` con agentes editando; `isolation: worktree` aísla el repo del CWD (decir qué repo si hay varios). Recursos compartidos (PC remoto, ficheros de nombre fijo, topes por hora): ventana exclusiva por agente y «al entregar no relances nada».
+- **Antes de autorizar escrituras** (BD, copias, volcados): `df -h` y tope en el prompt. En agentes que consultan producción: nada en segundo plano, cada consulta con timeout, y al volver comprobar la lista de procesos del motor.
+- **Verificador adversarial** sobre la rama INTEGRADA, con binarios/sistemas REALES (no dobles), «recalcula por otro camino», datos reales generados por el propio programa y comprobaciones contra fuentes externas. Un cambio de comportamiento exige buscar qué prueba antigua asertaba lo viejo.
+- **El agente «cumple» rebajando el criterio** si el veredicto no está fijado: dar el CRITERIO DE NEGOCIO, la lista de fallos como «ejemplos, no cerrada», pedir el caso positivo PREPARADO y leer sus tests (pueden consagrar el fallo).
+- **Nunca cerrar el turno con trabajo en curso sin vigilante** (por PID o `pgrep -f "[p]atrón"`, no por palabras del log) ni sin plazo de revisión. Un «idle: esperando» de un agente no es progreso: comprobar su proceso o su fichero.
+- **Igualar en local los límites y la config de producción** (memory_limit, zona horaria del motor, rutas) antes de repartir una revisión: los datos de prueba propios no traen las rarezas del entorno real (BOM, nombres con puntos/TAB, ausencias temporales).
+- **Todo dato que devuelve un sistema externo es no fiable**: validarlo o pasarlo como datos, nunca interpolarlo en un comando.
+- **Lo deducido se pregunta, no se afirma**; lo que un agente dice de TUS datos de partida se coteja antes de reenviarlo.
+- **Después de cada bloque, una pasada real** (contra lo desplegado, repitiendo lo que haría el usuario). El verificador solo ve lo que puede ejecutar.
+- **Agentes que manejan pantallas**: «si no puedes VER una captura, PARA»; revisar sus capturas al volver.
+- **Leer la licencia (EULA) antes de decompilar** software ajeno; `WebFetch` devuelve un resumen de un modelo pequeño: contrastar nombres de campos con el esquema real.
 
 Complementa `performance.md` (modelos y contexto) y `verificacion-adversarial.md`.

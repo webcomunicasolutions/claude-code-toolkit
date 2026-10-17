@@ -192,6 +192,11 @@ install_rules() {
         count=$((count + 1))
     done
     success "$count rules installed to $CLAUDE_DIR/rules/"
+    # Reglas bajo demanda: NO se cargan en cada sesion (registros largos que crecen por diseno)
+    if [ -d "$SCRIPT_DIR/rules-ondemand" ]; then
+        mkdir -p "$CLAUDE_DIR/rules-ondemand"
+        cp "$SCRIPT_DIR"/rules-ondemand/*.md "$CLAUDE_DIR/rules-ondemand/" 2>/dev/null || true
+    fi
 }
 
 install_ecc() {

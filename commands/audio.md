@@ -14,7 +14,8 @@ manos ocupadas, etc.
 /audio                 # resume TU ULTIMO mensaje y lo manda hablado
 /audio <texto>         # lee ese texto concreto
 /audio largo           # resumen mas extenso (hasta ~90s) en vez de ~40s
-/audio mujer           # usa voz femenina (es-ES-ElviraNeural)
+/audio hombre          # usa voz masculina (es-ES-AlvaroNeural)
+/audio elvira          # usa la otra voz femenina (es-ES-ElviraNeural)
 ```
 
 ## Lo importante: NO leas tu mensaje literal
@@ -51,7 +52,8 @@ nunca hardcodeadas).
 Variantes:
 
 ```bash
-# voz femenina
+# voz masculina (/audio hombre) o la otra femenina (/audio elvira)
+echo "texto" | VOZ=es-ES-AlvaroNeural ~/.claude/scripts/audio-nota.sh
 echo "texto" | VOZ=es-ES-ElviraNeural ~/.claude/scripts/audio-nota.sh
 
 # que suene ademas por los altavoces del PC
@@ -69,8 +71,8 @@ El script hace: edge-tts (texto -> mp3) -> ffmpeg (-> ogg/opus) -> Telegram
 ## Motor y coste
 
 - **edge-tts** (Microsoft): **gratis, sin API key, sin limite**. Voces
-  `es-ES-AlvaroNeural` (m, por defecto), `es-ES-ElviraNeural` (f),
-  `es-ES-XimenaNeural` (f).
+  `es-ES-XimenaNeural` (f, **por defecto** en el script), `es-ES-AlvaroNeural` (m),
+  `es-ES-ElviraNeural` (f). Si las demás voces es-ES no dan audio, quédate con estas tres.
 - Si prefieres un motor de pago (voz clonada, mejor prosodia), sustituye el
   paso 1 del script por tu proveedor de TTS preferido; solo cambia esa parte.
 - Credenciales de Telegram: variables de entorno `TELEGRAM_BOT_TOKEN` /

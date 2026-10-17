@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/*.{ts,tsx,js,jsx,mjs,cjs}"
+  - "**/package.json"
+  - "**/tsconfig.json"
+---
+
 # TypeScript
 
 ## Estilo

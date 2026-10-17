@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/*.py"
+  - "**/requirements*.txt"
+  - "**/pyproject.toml"
+---
+
 # Python
 
 ## Estilo

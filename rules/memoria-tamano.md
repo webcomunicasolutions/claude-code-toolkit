@@ -38,3 +38,20 @@ Si sale 🟡 o 🔴, **compactar antes de dar la sesion por guardada** y decirse
 Un `MEMORY.md` que no se carga entero es peor que no tenerlo: se cree que la regla o el dato estan
 recordados cuando no han llegado al contexto. Es el mismo patron que la regla de credenciales
 advierte con los punteros al vault: **una referencia rota es peor que ninguna referencia**.
+
+## También las instrucciones: CLAUDE.md global + `rules/` + CLAUDE.md de proyecto
+
+El harness tiene **otro tope para los ficheros de instrucciones** que se cargan en cada sesión (unos 150 K entre
+CLAUDE.md global, `rules/` y los CLAUDE.md del proyecto). En un caso real se pasó a 157,6 K: una regla de delegación
+había crecido a 47 K porque su diario de aprendizajes se apuntaba DENTRO de una regla que se carga siempre, y el
+CLAUDE.md de un proyecto llevaba 24 K con todo el historial de versiones en una sola línea.
+
+- `scripts/check_memory_size.sh` sin argumento mide las tres cosas: MEMORY.md de cada proyecto, la parte global
+  (CLAUDE.md + `rules/`, aviso a 100 K y rojo a 120 K, y señala reglas de más de 10 K) y los CLAUDE.md de la carpeta
+  de proyectos (`PROYECTOS_DIR`; aviso a 15 K, rojo a 20 K).
+- **Lo que crece por diseño (diarios, casos, historiales) NO vive en lo que se carga siempre**: va a un fichero propio
+  (`rules-ondemand/` en global, `HISTORIAL_*.md` en el proyecto) y en la regla o el CLAUDE.md queda el destilado + un puntero.
+- Al compactar un CLAUDE.md de proyecto: copiar las líneas LITERALES al fichero de historial antes de recortar, y dejar
+  solo la versión vigente y la anterior.
+- Las reglas de lenguaje llevan `paths:` en el frontmatter para cargarse solo al tocar esos ficheros; las de lenguajes
+  que no usas, mejor quitarlas (no se cargan nunca, pero ocupan inventario y confunden).
